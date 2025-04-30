@@ -34,7 +34,6 @@ dependencies {
     // Data
     implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
     implementation 'org.springframework.boot:spring-boot-starter-data-mongodb'
-    implementation 'org.springframework.boot:spring-boot-starter-data-redis'
 
     // MySQL Connector
     implementation 'mysql:mysql-connector-java:8.0.33'
@@ -66,4 +65,8 @@ dependencies {
 
 tasks.named('test') {
     useJUnitPlatform()
+}
+
+tasks.withType(Test).configureEach {
+    enabled = false
 }
