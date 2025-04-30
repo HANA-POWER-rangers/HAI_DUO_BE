@@ -61,6 +61,7 @@ graphql:
 springdoc:
   swagger-ui:
     path: /swagger-ui.html
-    operations-sorter: alpha
-  api-docs:
-    path: /v3/api-docs
+    groups-order: DESC
+    tags-sorter: alpha
+    operations-sorter: method
+
