@@ -1,10 +1,9 @@
 ---
-name: Bug template
+name: 🐞Bug template
 about: 버그 발생 시 사용하는 템플릿입니다
-title: "버그 리포트"
-labels: "\\U0001F41B BUG"
+title: "[bug]"
+labels: "🐞 BUG"
 assignees:
-
 ---
 
 # 버그 리포트
