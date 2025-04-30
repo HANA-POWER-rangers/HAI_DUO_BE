@@ -1,4 +1,4 @@
-package com.kobo.hai_duo;
+package com.poweranger.hai_duo;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;

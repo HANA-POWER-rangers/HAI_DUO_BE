@@ -1,4 +1,4 @@
-package com.kobo.hai_duo;
+package com.poweranger.hai_duo;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
