@@ -19,7 +19,7 @@ public class User {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long userId;
 
-    private String tempUserId;
+    private String tempUserToken;
     private int exp;
     private int goldAmount;
     private Long levelId;
