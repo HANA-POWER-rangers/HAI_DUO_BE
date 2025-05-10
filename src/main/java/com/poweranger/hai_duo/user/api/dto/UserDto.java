@@ -1,6 +1,9 @@
 package com.poweranger.hai_duo.user.api.dto;
 
 import java.time.LocalDateTime;
+
+import com.poweranger.hai_duo.user.domain.entity.GameCharacter;
+import com.poweranger.hai_duo.user.domain.entity.Level;
 import com.poweranger.hai_duo.user.domain.entity.User;
 
 public record UserDto(
@@ -8,8 +11,8 @@ public record UserDto(
         String tempUserToken,
         int exp,
         int goldAmount,
-        Long levelId,
-        Long characterId,
+        Level levelId,
+        GameCharacter characterId,
         LocalDateTime createdAt,
         LocalDateTime lastAccessedAt
 ) {
@@ -19,8 +22,8 @@ public record UserDto(
                 user.getTempUserToken(),
                 user.getExp(),
                 user.getGoldAmount(),
-                user.getLevelId(),
-                user.getCharacterId(),
+                user.getLevel(),
+                user.getGameCharacter(),
                 user.getCreatedAt(),
                 user.getLastAccessedAt()
         );

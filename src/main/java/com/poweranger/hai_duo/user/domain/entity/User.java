@@ -1,10 +1,7 @@
 package com.poweranger.hai_duo.user.domain.entity;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import jakarta.persistence.Id;
 import java.time.LocalDateTime;
 
@@ -12,6 +9,7 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @AllArgsConstructor
 @Getter
+@Setter
 @Entity
 public class User {
 
@@ -22,12 +20,23 @@ public class User {
     private String tempUserToken;
     private int exp;
     private int goldAmount;
-    private Long levelId;
-    private Long characterId;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "level_id")
+    private Level level;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "character_id")
+    private GameCharacter gameCharacter;
 
     @Column(nullable = false, updatable = false)
     private LocalDateTime createdAt = LocalDateTime.now();
 
     @Column(nullable = false)
     private LocalDateTime lastAccessedAt = LocalDateTime.now();
+
+    public void addExp(int amount) {
+        this.exp += amount;
+    }
+
 }
