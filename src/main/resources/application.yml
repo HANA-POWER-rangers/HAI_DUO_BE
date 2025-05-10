@@ -3,7 +3,7 @@ server:
 
 spring:
   application:
-    name: hai-duo-graphql
+    name: hai-duo
 
   datasource:
     url: ${DB_JDBC_URI}
