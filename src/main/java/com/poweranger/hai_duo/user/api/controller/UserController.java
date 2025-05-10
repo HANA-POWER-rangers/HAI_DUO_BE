@@ -1,6 +1,6 @@
 package com.poweranger.hai_duo.user.api.controller;
 
-import com.poweranger.hai_duo.user.application.service.UserService;
+import com.poweranger.hai_duo.user.api.resolver.UserMutationResolver;
 import com.poweranger.hai_duo.user.api.dto.UserDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
@@ -10,15 +10,15 @@ import org.springframework.web.bind.annotation.*;
 @RequiredArgsConstructor
 public class UserController {
 
-    private final UserService userService;
+    private final UserMutationResolver userMutationResolver;
 
     @PostMapping("/temp")
     public UserDto createTempUser() {
-        return userService.createTempUser();
+        return userMutationResolver.createTempUser();
     }
 
     @GetMapping("/{id}")
     public UserDto getUserById(@PathVariable Long id) {
-        return userService.getUserById(id);
+        return userMutationResolver.getUserById(id);
     }
 }
