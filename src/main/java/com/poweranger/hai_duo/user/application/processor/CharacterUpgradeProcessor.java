@@ -38,4 +38,5 @@ public class CharacterUpgradeProcessor {
         return characterRepository.findById(currentCharacter.getCharacterId() + 1)
                 .orElseThrow(() -> new GeneralException(ErrorStatus.CHARACTER_NOT_FOUND));
     }
+
 }

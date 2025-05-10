@@ -2,7 +2,6 @@ package com.poweranger.hai_duo.user.application.service;
 
 import com.poweranger.hai_duo.global.exception.GeneralException;
 import com.poweranger.hai_duo.global.response.code.ErrorStatus;
-import com.poweranger.hai_duo.user.api.dto.CharacterDto;
 import com.poweranger.hai_duo.user.api.dto.LevelUpResultDto;
 import com.poweranger.hai_duo.user.api.dto.UserDto;
 import com.poweranger.hai_duo.user.api.factory.LevelUpResultFactory;
