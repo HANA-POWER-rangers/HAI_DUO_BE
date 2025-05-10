@@ -41,9 +41,6 @@ dependencies {
     // Swagger / OpenAPI
     implementation 'org.springdoc:springdoc-openapi-starter-webmvc-ui:2.0.2'
 
-    // graphl
-    implementation 'com.graphql-java-kickstart:graphql-java-tools:13.0.2'
-
     // Lombok
     compileOnly 'org.projectlombok:lombok'
     annotationProcessor 'org.projectlombok:lombok'
