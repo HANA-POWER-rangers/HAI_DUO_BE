@@ -3,7 +3,7 @@ server:
 
 spring:
   application:
-    name: hai-duo-graphql
+    name: hai-duo
 
   datasource:
     url: ${DB_JDBC_URI}
@@ -13,7 +13,7 @@ spring:
 
   jpa:
     hibernate:
-      ddl-auto: update
+      ddl-auto: create
     show-sql: true
     properties:
       hibernate:
@@ -41,7 +41,7 @@ graphql:
     path: /graphiql
     endpoint: /graphql
   schema:
-    locations: classpath:graphql/**
+    locations: classpath:graphql/
 
 #jwt:
 #  secret: your_jwt_secret_key_here

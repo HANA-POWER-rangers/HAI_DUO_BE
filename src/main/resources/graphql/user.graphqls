@@ -1,0 +1,18 @@
+type Mutation {
+  createTempUser: UserDto
+}
+
+type Query {
+  getUserById(userId: ID!): UserDto
+}
+
+type UserDto {
+  userId: ID!
+  tempUserToken: String!
+  exp: Int!
+  levelId: ID!
+  characterId: ID!
+  goldAmount: Int!
+  createdAt: String!
+  lastAccessedAt: String!
+}
