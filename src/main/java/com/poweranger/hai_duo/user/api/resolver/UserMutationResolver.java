@@ -16,4 +16,5 @@ public class UserMutationResolver {
     public UserDto createTempUser() {
         return userService.createTempUser();
     }
+
 }

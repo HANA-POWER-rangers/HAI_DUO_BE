@@ -3,31 +3,32 @@ package com.poweranger.hai_duo.user.application.service;
 import com.poweranger.hai_duo.global.exception.GeneralException;
 import com.poweranger.hai_duo.global.response.code.ErrorStatus;
 import com.poweranger.hai_duo.user.api.dto.UserDto;
-import com.poweranger.hai_duo.user.domain.repository.UserRepository;
+import com.poweranger.hai_duo.user.domain.entity.GameCharacter;
+import com.poweranger.hai_duo.user.domain.entity.Level;
 import com.poweranger.hai_duo.user.domain.entity.User;
+import com.poweranger.hai_duo.user.domain.repository.CharacterRepository;
+import com.poweranger.hai_duo.user.domain.repository.LevelRepository;
+import com.poweranger.hai_duo.user.domain.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import java.time.LocalDateTime;
-import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
 public class UserService {
 
     private final UserRepository userRepository;
+    private final LevelRepository levelRepository;
+    private final CharacterRepository characterRepository;
+    private final UserFactory userFactory;
 
     public UserDto createTempUser() {
-        User user = User.builder()
-                .tempUserToken(UUID.randomUUID().toString())
-                .exp(0)
-                .goldAmount(0)
-                .levelId(1L)
-                .characterId(1L)
-                .createdAt(LocalDateTime.now())
-                .lastAccessedAt(LocalDateTime.now())
-                .build();
+        Level defaultLevel = levelRepository.findById(1L)
+                .orElseThrow(() -> new GeneralException(ErrorStatus.LEVEL_NOT_FOUND));
+        GameCharacter defaultGameCharacter = characterRepository.findById(1L)
+                .orElseThrow(() -> new GeneralException(ErrorStatus.CHARACTER_NOT_FOUND));
 
-        return UserDto.from(userRepository.save(user));
+        User newUser = userFactory.createTempUser(defaultLevel, defaultGameCharacter);
+        return UserDto.from(userRepository.save(newUser));
     }
 
     public UserDto getUserById(Long id) {
