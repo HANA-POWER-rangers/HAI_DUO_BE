@@ -15,6 +15,6 @@ public class UserQueryResolver {
 
     @QueryMapping
     public UserDto getUserById(@Argument Long userId) {
-        return userService.getUserById(userId);
+        return userService.getUserDtoById(userId);
     }
 }

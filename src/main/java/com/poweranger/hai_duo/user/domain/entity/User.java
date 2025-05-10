@@ -31,11 +31,18 @@ public class User {
     @JoinColumn(name = "character_id")
     private GameCharacter gameCharacter;
 
-
     @Column(nullable = false, updatable = false)
     private LocalDateTime createdAt = LocalDateTime.now();
 
     @Column(nullable = false)
     private LocalDateTime lastAccessedAt = LocalDateTime.now();
+
+    public void addExp(int amount) {
+        this.exp += amount;
+    }
+
+    public void updateLevel(Level level) {
+        this.level = level;
+    }
 
 }
