@@ -5,6 +5,8 @@ import com.poweranger.hai_duo.global.response.code.ErrorStatus;
 import com.poweranger.hai_duo.user.api.dto.CharacterDto;
 import com.poweranger.hai_duo.user.api.dto.LevelUpResultDto;
 import com.poweranger.hai_duo.user.api.dto.UserDto;
+import com.poweranger.hai_duo.user.api.factory.LevelUpResultFactory;
+import com.poweranger.hai_duo.user.api.factory.UserFactory;
 import com.poweranger.hai_duo.user.application.processor.CharacterUpgradeProcessor;
 import com.poweranger.hai_duo.user.application.processor.LevelUpProcessor;
 import com.poweranger.hai_duo.user.domain.entity.GameCharacter;
@@ -15,9 +17,11 @@ import com.poweranger.hai_duo.user.domain.repository.LevelRepository;
 import com.poweranger.hai_duo.user.domain.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @RequiredArgsConstructor
+@Transactional
 public class UserService {
 
     private final UserRepository userRepository;
@@ -32,8 +36,8 @@ public class UserService {
                 .orElseThrow(() -> new GeneralException(ErrorStatus.LEVEL_NOT_FOUND));
         GameCharacter defaultGameCharacter = characterRepository.findById(1L)
                 .orElseThrow(() -> new GeneralException(ErrorStatus.CHARACTER_NOT_FOUND));
-
         User newUser = userFactory.createTempUser(defaultLevel, defaultGameCharacter);
+        newUser.setExp(100);
         return UserDto.from(userRepository.save(newUser));
     }
 
@@ -44,24 +48,30 @@ public class UserService {
     }
 
     public LevelUpResultDto applyExpAndUpgradeStatus(Long userId, int amount) {
-        User user = getUser(userId);
-        user.addExp(amount);
+        User user = loadUser(userId);
+        increaseExp(user, amount);
 
-        boolean leveledUp = levelUpProcessor.tryLevelUp(user);
-        GameCharacter upgradedCharacter = characterUpgradeProcessor.tryUpgrade(user);
+        int levelDiff = levelUpProcessor.applyLevelUp(user);
+        boolean leveledUp = isLeveledUp(levelDiff);
 
-        return LevelUpResultDto.builder()
-                .userId(user.getUserId())
-                .exp(user.getExp())
-                .levelId(user.getLevel().getLevelId())
-                .leveledUp(leveledUp)
-                .upgradedCharacter(CharacterDto.from(upgradedCharacter))
-                .build();
+        GameCharacter upgradedCharacter = characterUpgradeProcessor.processCharacterUpgrade(userId, user.getLevel());
+        user.setGameCharacter(upgradedCharacter);
+
+        userRepository.save(user);
+        return LevelUpResultFactory.from(user, leveledUp, upgradedCharacter);
     }
 
-    private User getUser(Long userId) {
+    private User loadUser(Long userId) {
         return userRepository.findById(userId)
                 .orElseThrow(() -> new GeneralException(ErrorStatus.USER_NOT_FOUND));
+    }
+
+    private void increaseExp(User user, int amount) {
+        user.addExp(amount);
+    }
+
+    private boolean isLeveledUp(int diff) {
+        return diff > 0;
     }
 
 }

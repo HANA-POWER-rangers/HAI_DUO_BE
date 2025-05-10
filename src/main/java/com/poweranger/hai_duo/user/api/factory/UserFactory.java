@@ -1,4 +1,4 @@
-package com.poweranger.hai_duo.user.application.service;
+package com.poweranger.hai_duo.user.api.factory;
 
 import com.poweranger.hai_duo.user.domain.entity.GameCharacter;
 import com.poweranger.hai_duo.user.domain.entity.Level;

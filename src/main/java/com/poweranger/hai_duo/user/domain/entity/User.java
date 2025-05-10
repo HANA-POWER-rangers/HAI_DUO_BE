@@ -1,10 +1,7 @@
 package com.poweranger.hai_duo.user.domain.entity;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import jakarta.persistence.Id;
 import java.time.LocalDateTime;
 
@@ -12,6 +9,7 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @AllArgsConstructor
 @Getter
+@Setter
 @Entity
 public class User {
 
@@ -39,10 +37,6 @@ public class User {
 
     public void addExp(int amount) {
         this.exp += amount;
-    }
-
-    public void updateLevel(Level level) {
-        this.level = level;
     }
 
 }
