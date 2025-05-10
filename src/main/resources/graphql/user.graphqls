@@ -8,7 +8,7 @@ type Query {
 
 type UserDto {
   userId: ID!
-  tempUserId: String!
+  tempUserToken: String!
   exp: Int!
   levelId: ID!
   characterId: ID!

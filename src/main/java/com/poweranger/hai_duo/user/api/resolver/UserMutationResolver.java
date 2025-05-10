@@ -12,10 +12,6 @@ public class UserMutationResolver implements GraphQLMutationResolver {
 
     private final UserService userService;
 
-    public UserDto createTempUser() {
-        return userService.createTempUser();
-    }
-
     public UserDto getUserById(Long id) {
         return userService.getUserById(id);
     }
