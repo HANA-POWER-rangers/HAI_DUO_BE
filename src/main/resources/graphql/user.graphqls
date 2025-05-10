@@ -1,5 +1,6 @@
 type Mutation {
   createTempUser: UserDto
+  applyExpAndUpgradeStatus(userId: ID!, amount: Int!): LevelUpResultDto
 }
 
 type Query {
@@ -15,4 +16,17 @@ type UserDto {
   goldAmount: Int!
   createdAt: String!
   lastAccessedAt: String!
+}
+
+type LevelUpResultDto {
+  userId: ID!
+  exp: Int!
+  levelId: ID!
+  leveledUp: Boolean!
+  upgradedCharacter: CharacterDto!
+}
+
+type CharacterDto {
+  characterId: ID!
+  characterName: String!
 }
