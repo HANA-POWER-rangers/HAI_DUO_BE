@@ -1,6 +1,12 @@
 extend type Query {
     getQuizzesByStageId(chapterId: ID!, stageId: ID!): QuizByStageIdDto
     getQuizByStageIdAndType(stageId: ID!, quizType: QuizType!): QuizUnionDto
+    getQuizzesByChapterId(chapterId: ID!): QuizByChapterIdDto
+}
+
+type QuizByChapterIdDto {
+    chapterId: ID!
+    quizzes: [QuizByStageIdDto!]!
 }
 
 type QuizByStageIdDto {
