@@ -1,4 +1,4 @@
-package com.poweranger.hai_duo.course.domain.entity;
+package com.poweranger.hai_duo.learning.domain.entity;
 
 import jakarta.persistence.*;
 

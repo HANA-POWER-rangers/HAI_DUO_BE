@@ -1,6 +1,6 @@
 package com.poweranger.hai_duo.quiz.domain.entity;
 
-import com.poweranger.hai_duo.course.domain.entity.Stage;
+import com.poweranger.hai_duo.learning.domain.entity.Stage;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
