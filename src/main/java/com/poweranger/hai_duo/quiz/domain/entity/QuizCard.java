@@ -18,6 +18,7 @@ public class QuizCard {
     private Quiz quiz;
 
     private String meaning;
-    private String choices; // jsoin string 형식
+    private String choices; // json string 형식
     private String correctWord;
+
 }
