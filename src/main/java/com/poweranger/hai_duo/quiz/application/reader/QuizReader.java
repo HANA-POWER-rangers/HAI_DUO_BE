@@ -16,19 +16,35 @@ public class QuizReader {
     private final QuizOXRepository quizOXRepository;
     private final QuizBlankRepository quizBlankRepository;
 
-    public Optional<QuizMeaning> getMeaningQuiz(Stage stage) {
+    public Optional<QuizMeaning> getMeaningQuizByStage(Stage stage) {
         return quizMeaningRepository.findByStage(stage);
     }
 
-    public Optional<QuizCard> getCardQuiz(Stage stage) {
+    public Optional<QuizCard> getCardQuizByStage(Stage stage) {
         return quizCardRepository.findByStage(stage);
     }
 
-    public Optional<QuizOX> getOXQuiz(Stage stage) {
+    public Optional<QuizOX> getOXQuizByStage(Stage stage) {
         return quizOXRepository.findByStage(stage);
     }
 
-    public Optional<QuizBlank> getBlankQuiz(Stage stage) {
+    public Optional<QuizBlank> getBlankQuizByStage(Stage stage) {
         return quizBlankRepository.findByStage(stage);
+    }
+
+    public Optional<QuizMeaning> getMeaningQuizByStageId(Long stageId) {
+        return quizMeaningRepository.findByStage_StageId(stageId);
+    }
+
+    public Optional<QuizCard> getCardQuizByStageId(Long stageId) {
+        return quizCardRepository.findByStage_StageId(stageId);
+    }
+
+    public Optional<QuizOX> getOXQuizByStageId(Long stageId) {
+        return quizOXRepository.findByStage_StageId(stageId);
+    }
+
+    public Optional<QuizBlank> getBlankQuizByStageId(Long stageId) {
+        return quizBlankRepository.findByStage_StageId(stageId);
     }
 }

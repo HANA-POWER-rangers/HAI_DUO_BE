@@ -18,16 +18,17 @@ public class QuizService {
     private final QuizDtoFactory quizDtoFactory;
     private final QuizReader quizReader;
 
-    public QuizByStageIdDto getQuizzes(Long stageId) {
+    public QuizByStageIdDto getQuizzesByStageId(Long stageId) {
         Stage stage = stageRepository.findById(stageId)
                 .orElseThrow(() -> new GeneralException(ErrorStatus.STAGE_NOT_FOUND));
 
         return quizDtoFactory.from(
                 stage,
-                quizDtoFactory.mapToDto(quizReader.getMeaningQuiz(stage), quizDtoFactory::toDto),
-                quizDtoFactory.mapToDto(quizReader.getCardQuiz(stage), quizDtoFactory::toDto),
-                quizDtoFactory.mapToDto(quizReader.getOXQuiz(stage), quizDtoFactory::toDto),
-                quizDtoFactory.mapToDto(quizReader.getBlankQuiz(stage), quizDtoFactory::toDto)
+                quizDtoFactory.mapToDto(quizReader.getMeaningQuizByStage(stage), quizDtoFactory::toDto),
+                quizDtoFactory.mapToDto(quizReader.getCardQuizByStage(stage), quizDtoFactory::toDto),
+                quizDtoFactory.mapToDto(quizReader.getOXQuizByStage(stage), quizDtoFactory::toDto),
+                quizDtoFactory.mapToDto(quizReader.getBlankQuizByStage(stage), quizDtoFactory::toDto)
         );
     }
+
 }

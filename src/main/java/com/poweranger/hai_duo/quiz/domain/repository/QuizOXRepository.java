@@ -7,4 +7,5 @@ import java.util.Optional;
 
 public interface QuizOXRepository extends CrudRepository<QuizOX, Long> {
     Optional<QuizOX> findByStage(Stage stage);
+    Optional<QuizOX> findByStage_StageId(Long stageId);
 }

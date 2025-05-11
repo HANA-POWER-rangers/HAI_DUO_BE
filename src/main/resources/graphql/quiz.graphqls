@@ -1,5 +1,6 @@
 extend type Query {
     getQuizzesByStageId(chapterId: ID!, stageId: ID!): QuizByStageIdDto
+    getQuizByStageIdAndType(stageId: ID!, quizType: QuizType!): QuizUnionDto
 }
 
 type QuizByStageIdDto {
@@ -33,3 +34,12 @@ type QuizBlankDto {
     sentenceWithBlank: String!
     correctWord: String!
 }
+
+enum QuizType {
+    MEAN
+    CARD
+    OX
+    BLANK
+}
+
+union QuizUnionDto = QuizMeaningDto | QuizCardDto | QuizOXDto | QuizBlankDto
