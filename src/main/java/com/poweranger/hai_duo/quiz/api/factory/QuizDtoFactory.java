@@ -1,5 +1,6 @@
 package com.poweranger.hai_duo.quiz.api.factory;
 
+import com.poweranger.hai_duo.learning.domain.entity.Chapter;
 import com.poweranger.hai_duo.learning.domain.entity.Stage;
 import com.poweranger.hai_duo.quiz.api.dto.*;
 import com.poweranger.hai_duo.quiz.application.reader.QuizReader;
@@ -9,6 +10,7 @@ import com.poweranger.hai_duo.quiz.domain.entity.QuizMeaning;
 import com.poweranger.hai_duo.quiz.domain.entity.QuizOX;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
+import java.util.List;
 import java.util.Optional;
 import java.util.function.Function;
 
@@ -38,7 +40,7 @@ public class QuizDtoFactory {
         return entityOpt.map(mapper).orElse(null);
     }
 
-    public QuizByStageIdDto from(Stage stage,
+    public QuizByStageIdDto toQuizByStageDto(Stage stage,
                                  QuizMeaningDto meaning,
                                  QuizCardDto card,
                                  QuizOXDto ox,
@@ -73,6 +75,31 @@ public class QuizDtoFactory {
         return reader.apply(stageId)
                 .map(mapper)
                 .orElse(null);
+    }
+
+    public QuizByStageIdDto buildQuizDtoByStage(Stage stage) {
+        return toQuizByStageDto(
+                stage,
+                mapToDto(quizReader.getMeaningQuizByStage(stage), this::toDto),
+                mapToDto(quizReader.getCardQuizByStage(stage), this::toDto),
+                mapToDto(quizReader.getOXQuizByStage(stage), this::toDto),
+                mapToDto(quizReader.getBlankQuizByStage(stage), this::toDto)
+        );
+    }
+
+    public List<QuizByStageIdDto> buildQuizDtoByStageList(List<Stage> stages) {
+        return stages.stream()
+                .map(this::buildQuizDtoByStage)
+                .toList();
+    }
+
+    public QuizByChapterIdDto toQuizByChapterDto(
+            Chapter chapter,
+            List<QuizByStageIdDto> quizzes) {
+        return QuizByChapterIdDto.builder()
+                .chapterId(chapter.getChapterId())
+                .quizzes(quizzes)
+                .build();
     }
 
 }

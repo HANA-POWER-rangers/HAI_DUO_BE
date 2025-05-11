@@ -23,7 +23,8 @@ public enum ErrorStatus implements BaseCode {
     CHARACTER_NOT_FOUND(HttpStatus.NOT_FOUND, "CHAR4001", "해당 캐릭터가 존재하지 않습니다."),
 
     // 학습 관련
-    STAGE_NOT_FOUND(HttpStatus.NOT_FOUND, "STAGE4001", "해당 스테이지가 존재하지 않습니다.");
+    STAGE_NOT_FOUND(HttpStatus.NOT_FOUND, "STAGE4001", "해당 스테이지가 존재하지 않습니다."),
+    CHAPTER_NOT_FOUND(HttpStatus.NOT_FOUND, "CHAPTER4001", "해당 챕터가 존재하지 않습니다.");
 
     private final HttpStatus httpStatus;
     private final String code;

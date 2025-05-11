@@ -1,5 +1,6 @@
 package com.poweranger.hai_duo.quiz.api.resolver;
 
+import com.poweranger.hai_duo.quiz.api.dto.QuizByChapterIdDto;
 import com.poweranger.hai_duo.quiz.api.dto.QuizByStageIdDto;
 import com.poweranger.hai_duo.quiz.api.factory.QuizDtoFactory;
 import com.poweranger.hai_duo.quiz.application.service.QuizService;
@@ -29,6 +30,11 @@ public class QuizQueryResolver {
             case OX -> quizDtoFactory.getOXQuizByStageId(stageId);
             case BLANK -> quizDtoFactory.getBlankQuizByStageId(stageId);
         };
+    }
+
+    @QueryMapping
+    public QuizByChapterIdDto getQuizzesByChapterId(@Argument Long chapterId){
+        return quizService.getQuizzesByChapterId(chapterId);
     }
 
 }
