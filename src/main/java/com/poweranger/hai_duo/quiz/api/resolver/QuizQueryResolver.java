@@ -10,6 +10,8 @@ import org.springframework.graphql.data.method.annotation.Argument;
 import org.springframework.graphql.data.method.annotation.QueryMapping;
 import org.springframework.stereotype.Controller;
 
+import java.util.List;
+
 @Controller
 @RequiredArgsConstructor
 public class QuizQueryResolver {
@@ -35,6 +37,14 @@ public class QuizQueryResolver {
     @QueryMapping
     public QuizByChapterIdDto getQuizzesByChapterId(@Argument Long chapterId){
         return quizService.getQuizzesByChapterId(chapterId);
+    }
+
+    @QueryMapping
+    public List<Object> getQuizzesByChapterIdAndType(
+            @Argument Long chapterId,
+            @Argument QuizType quizType
+    ) {
+        return quizService.getQuizzesByChapterIdAndType(chapterId, quizType);
     }
 
 }

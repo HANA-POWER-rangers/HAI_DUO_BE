@@ -6,6 +6,7 @@ import com.poweranger.hai_duo.learning.domain.entity.Chapter;
 import com.poweranger.hai_duo.learning.domain.entity.Stage;
 import com.poweranger.hai_duo.quiz.api.dto.*;
 import com.poweranger.hai_duo.quiz.api.factory.QuizDtoFactory;
+import com.poweranger.hai_duo.quiz.domain.entity.QuizType;
 import com.poweranger.hai_duo.quiz.domain.repository.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -39,6 +40,12 @@ public class QuizService {
     private Chapter getChapterByChapterId(Long chapterId) {
         return chapterRepository.findById(chapterId)
                 .orElseThrow(() -> new GeneralException(ErrorStatus.CHAPTER_NOT_FOUND));
+    }
+
+    public List<Object> getQuizzesByChapterIdAndType(Long chapterId, QuizType quizType) {
+        Chapter chapter = getChapterByChapterId(chapterId);
+        List<Stage> stages = stageRepository.findAllByChapter(chapter);
+        return quizDtoFactory.buildQuizDtoListByChapterAndType(stages, quizType);
     }
 
 }

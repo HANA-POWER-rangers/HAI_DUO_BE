@@ -2,6 +2,7 @@ extend type Query {
     getQuizzesByStageId(chapterId: ID!, stageId: ID!): QuizByStageIdDto
     getQuizByStageIdAndType(stageId: ID!, quizType: QuizType!): QuizUnionDto
     getQuizzesByChapterId(chapterId: ID!): QuizByChapterIdDto
+    getQuizzesByChapterIdAndType(chapterId: ID!, quizType: QuizType!): [QuizUnionDto!]!
 }
 
 type QuizByChapterIdDto {

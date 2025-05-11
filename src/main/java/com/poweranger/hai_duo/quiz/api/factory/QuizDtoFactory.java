@@ -4,10 +4,7 @@ import com.poweranger.hai_duo.learning.domain.entity.Chapter;
 import com.poweranger.hai_duo.learning.domain.entity.Stage;
 import com.poweranger.hai_duo.quiz.api.dto.*;
 import com.poweranger.hai_duo.quiz.application.reader.QuizReader;
-import com.poweranger.hai_duo.quiz.domain.entity.QuizBlank;
-import com.poweranger.hai_duo.quiz.domain.entity.QuizCard;
-import com.poweranger.hai_duo.quiz.domain.entity.QuizMeaning;
-import com.poweranger.hai_duo.quiz.domain.entity.QuizOX;
+import com.poweranger.hai_duo.quiz.domain.entity.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 import java.util.List;
@@ -100,6 +97,17 @@ public class QuizDtoFactory {
                 .chapterId(chapter.getChapterId())
                 .quizzes(quizzes)
                 .build();
+    }
+
+    public List<Object> buildQuizDtoListByChapterAndType(List<Stage> stages, QuizType quizType) {
+        return stages.stream()
+                .map(stage -> (Object) switch (quizType) {
+                    case MEAN -> getMeaningQuizByStageId(stage.getStageId());
+                    case CARD -> getCardQuizByStageId(stage.getStageId());
+                    case OX -> getOXQuizByStageId(stage.getStageId());
+                    case BLANK -> getBlankQuizByStageId(stage.getStageId());
+                })
+                .toList();
     }
 
 }
