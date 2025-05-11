@@ -22,7 +22,7 @@ public class QuizQueryResolver {
     }
 
     @QueryMapping
-    public Object getQuizByStageIdAndType(Long stageId, QuizType quizType) {
+    public Object getQuizByStageIdAndType(@Argument Long stageId, @Argument QuizType quizType) {
         return switch (quizType) {
             case MEAN -> quizDtoFactory.getMeaningQuizByStageId(stageId);
             case CARD -> quizDtoFactory.getCardQuizByStageId(stageId);
