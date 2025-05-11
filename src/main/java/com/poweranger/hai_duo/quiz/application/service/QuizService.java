@@ -12,14 +12,14 @@ import org.springframework.stereotype.Service;
 
 @Service
 @RequiredArgsConstructor
-public class quizService {
+public class QuizService {
 
     private final StageRepository stageRepository;
     private final QuizDtoFactory quizDtoFactory;
     private final QuizReader quizReader;
 
-    public QuizByStageIdDto getQuizzes(Long chapterId, Long stageId) {
-        Stage stage = stageRepository.findByIdAndChapterId(stageId, chapterId)
+    public QuizByStageIdDto getQuizzes(Long stageId) {
+        Stage stage = stageRepository.findById(stageId)
                 .orElseThrow(() -> new GeneralException(ErrorStatus.STAGE_NOT_FOUND));
 
         return quizDtoFactory.from(

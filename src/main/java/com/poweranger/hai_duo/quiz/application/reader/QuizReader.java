@@ -5,7 +5,6 @@ import com.poweranger.hai_duo.quiz.domain.entity.*;
 import com.poweranger.hai_duo.quiz.domain.repository.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
-
 import java.util.Optional;
 
 @Component
