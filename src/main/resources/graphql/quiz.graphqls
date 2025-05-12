@@ -1,0 +1,52 @@
+extend type Query {
+    getQuizzesByStageId(chapterId: ID!, stageId: ID!): QuizByStageIdDto
+    getQuizByStageIdAndType(stageId: ID!, quizType: QuizType!): QuizUnionDto
+    getQuizzesByChapterId(chapterId: ID!): QuizByChapterIdDto
+    getQuizzesByChapterIdAndType(chapterId: ID!, quizType: QuizType!): [QuizUnionDto!]!
+}
+
+type QuizByChapterIdDto {
+    chapterId: ID!
+    quizzes: [QuizByStageIdDto!]!
+}
+
+type QuizByStageIdDto {
+    stageId: ID!
+    stageName: String!
+    quizMeaning: QuizMeaningDto
+    quizCard: QuizCardDto
+    quizOX: QuizOXDto
+    quizBlank: QuizBlankDto
+}
+
+type QuizMeaningDto {
+    word: String!
+    meaning: String!
+    exampleSentence: String!
+}
+
+type QuizCardDto {
+    meaning: String!
+    choices: String! # JSON string
+    correctWord: String!
+}
+
+type QuizOXDto {
+    word: String!
+    meaning: String!
+    isCorrect: Boolean!
+}
+
+type QuizBlankDto {
+    sentenceWithBlank: String!
+    correctWord: String!
+}
+
+enum QuizType {
+    MEAN
+    CARD
+    OX
+    BLANK
+}
+
+union QuizUnionDto = QuizMeaningDto | QuizCardDto | QuizOXDto | QuizBlankDto
