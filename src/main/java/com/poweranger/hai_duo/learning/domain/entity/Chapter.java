@@ -14,10 +14,6 @@ public class Chapter {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long chapterId;
 
-    @OneToOne
-    @JoinColumn(name = "character_id")
-    private GameCharacter character;
-
     @Column(nullable = false, updatable = false)
     private LocalDateTime createdAt = LocalDateTime.now();
 
