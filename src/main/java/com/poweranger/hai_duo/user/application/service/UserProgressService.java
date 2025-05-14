@@ -2,15 +2,16 @@ package com.poweranger.hai_duo.user.application.service;
 
 import com.poweranger.hai_duo.global.exception.GeneralException;
 import com.poweranger.hai_duo.global.response.code.ErrorStatus;
+import com.poweranger.hai_duo.progress.application.reader.ProgressReader;
 import com.poweranger.hai_duo.progress.domain.entity.Chapter;
 import com.poweranger.hai_duo.progress.domain.entity.Level;
 import com.poweranger.hai_duo.progress.domain.entity.Stage;
 import com.poweranger.hai_duo.progress.domain.repository.LevelRepository;
 import com.poweranger.hai_duo.progress.api.dto.ChapterResponseDto;
 import com.poweranger.hai_duo.progress.api.dto.LevelResponseDto;
-import com.poweranger.hai_duo.quiz.api.dto.ProgressResponseDto;
+import com.poweranger.hai_duo.progress.api.dto.ProgressResponseDto;
 import com.poweranger.hai_duo.progress.api.dto.StageResponseDto;
-import com.poweranger.hai_duo.quiz.api.factory.ProgressDtoFactory;
+import com.poweranger.hai_duo.progress.api.factory.ProgressDtoFactory;
 import com.poweranger.hai_duo.quiz.domain.repository.StageRepository;
 import com.poweranger.hai_duo.user.domain.entity.mongodb.UserQuizLog;
 import com.poweranger.hai_duo.user.domain.entity.mysql.User;
@@ -27,9 +28,7 @@ import org.springframework.stereotype.Service;
 public class UserProgressService {
 
     private final MongoTemplate mongoTemplate;
-    private final StageRepository stageRepository;
-    private final LevelRepository levelRepository;
-    private final UserRepository userRepository;
+    private final ProgressReader progressReader;
     private final ProgressDtoFactory progressDtoFactory;
 
     public Long getLatestStageIdFromLog(Long userId) {
@@ -39,55 +38,43 @@ public class UserProgressService {
                         .limit(1),
                 UserQuizLog.class
         );
-
         validateLogExists(log);
-
         return log.getStageId();
     }
 
     private void validateLogExists(UserQuizLog log) {
-        if(log == null) {
+        if (log == null) {
             throw new GeneralException(ErrorStatus.QUIZ_NOT_FOUND);
         }
     }
 
     public StageResponseDto getCurrentStage(Long userId) {
-        Stage stage = findStageByLatestLog(userId);
+        Stage stage = getLatestStage(userId);
         return new StageResponseDto(stage.getStageId(), stage.getStageName());
     }
 
     public ChapterResponseDto getCurrentChapter(Long userId) {
-        Stage stage = findStageByLatestLog(userId);
-        Chapter chapter = stage.getChapter();
+        Stage stage = getLatestStage(userId);
+        Chapter chapter = progressReader.getChapterByStage(stage);
         return new ChapterResponseDto(chapter.getChapterId());
     }
 
     public LevelResponseDto getCurrentLevel(Long userId) {
-        Level level = findLevelByUser(userId);
+        User user = progressReader.getUser(userId);
+        Level level = progressReader.getLevelByUser(user);
         return new LevelResponseDto(level.getLevelId());
     }
 
     public ProgressResponseDto getCurrentProgress(Long userId) {
-        Stage stage = findStageByLatestLog(userId);
-        Chapter chapter = stage.getChapter();
-        Level level = findLevelByUser(userId);
+        Stage stage = getLatestStage(userId);
+        Chapter chapter = progressReader.getChapterByStage(stage);
+        User user = progressReader.getUser(userId);
+        Level level = progressReader.getLevelByUser(user);
         return progressDtoFactory.toProgressResponseDto(level, chapter, stage);
     }
 
-    private Stage findStageByLatestLog(Long userId) {
-        return stageRepository.findById(getLatestStageIdFromLog(userId))
-                .orElseThrow(() -> new GeneralException(ErrorStatus.STAGE_NOT_FOUND));
+    private Stage getLatestStage(Long userId) {
+        Long stageId = getLatestStageIdFromLog(userId);
+        return progressReader.getStage(stageId);
     }
-
-    private Level findLevelByUser(Long userId) {
-        User user = findUserById(userId);
-        return levelRepository.findById(user.getLevel().getLevelId())
-                .orElseThrow(() -> new GeneralException(ErrorStatus.LEVEL_NOT_FOUND));
-    }
-
-    private User findUserById(Long userId) {
-        return userRepository.findById(userId)
-                .orElseThrow(() -> new GeneralException(ErrorStatus.USER_NOT_FOUND));
-    }
-
 }

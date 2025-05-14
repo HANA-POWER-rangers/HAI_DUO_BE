@@ -1,9 +1,9 @@
-package com.poweranger.hai_duo.quiz.api.factory;
+package com.poweranger.hai_duo.progress.api.factory;
 
 import com.poweranger.hai_duo.progress.domain.entity.Chapter;
 import com.poweranger.hai_duo.progress.domain.entity.Level;
 import com.poweranger.hai_duo.progress.domain.entity.Stage;
-import com.poweranger.hai_duo.quiz.api.dto.ProgressResponseDto;
+import com.poweranger.hai_duo.progress.api.dto.ProgressResponseDto;
 import org.springframework.stereotype.Component;
 
 @Component
