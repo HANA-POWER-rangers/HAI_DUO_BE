@@ -8,6 +8,7 @@ import com.poweranger.hai_duo.learning.domain.entity.Stage;
 import com.poweranger.hai_duo.learning.domain.repository.LevelRepository;
 import com.poweranger.hai_duo.quiz.api.dto.ChapterResponseDto;
 import com.poweranger.hai_duo.quiz.api.dto.LevelResponseDto;
+import com.poweranger.hai_duo.quiz.api.dto.ProgressResponseDto;
 import com.poweranger.hai_duo.quiz.api.dto.StageResponseDto;
 import com.poweranger.hai_duo.quiz.domain.repository.StageRepository;
 import com.poweranger.hai_duo.user.domain.entity.mongodb.UserQuizLog;
@@ -62,6 +63,24 @@ public class UserProgressService {
     public LevelResponseDto getCurrentLevel(Long userId) {
         Level level = findLevelByUser(userId);
         return new LevelResponseDto(level.getLevelId());
+    }
+
+    public ProgressResponseDto getCurrentProgress(Long userId) {
+        Stage stage = findStageByLatestLog(userId);
+        Chapter chapter = stage.getChapter();
+
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new GeneralException(ErrorStatus.USER_NOT_FOUND));
+
+        Level level = levelRepository.findById(user.getLevel().getLevelId())
+                .orElseThrow(() -> new GeneralException(ErrorStatus.LEVEL_NOT_FOUND));
+
+        return ProgressResponseDto.builder()
+                .levelId(level.getLevelId())
+                .chapterId(chapter.getChapterId())
+                .stageId(stage.getStageId())
+                .stageName(stage.getStageName())
+                .build();
     }
 
     private Stage findStageByLatestLog(Long userId) {
