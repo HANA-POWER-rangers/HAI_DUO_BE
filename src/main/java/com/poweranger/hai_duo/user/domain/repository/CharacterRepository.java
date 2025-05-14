@@ -1,6 +1,6 @@
 package com.poweranger.hai_duo.user.domain.repository;
 
-import com.poweranger.hai_duo.user.domain.entity.GameCharacter;
+import com.poweranger.hai_duo.user.domain.entity.mysql.GameCharacter;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;

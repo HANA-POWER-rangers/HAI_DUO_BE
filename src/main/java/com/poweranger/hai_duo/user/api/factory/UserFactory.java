@@ -1,8 +1,8 @@
 package com.poweranger.hai_duo.user.api.factory;
 
-import com.poweranger.hai_duo.user.domain.entity.GameCharacter;
-import com.poweranger.hai_duo.user.domain.entity.Level;
-import com.poweranger.hai_duo.user.domain.entity.User;
+import com.poweranger.hai_duo.user.domain.entity.mysql.GameCharacter;
+import com.poweranger.hai_duo.learning.domain.entity.Level;
+import com.poweranger.hai_duo.user.domain.entity.mysql.User;
 import org.springframework.stereotype.Component;
 import java.time.LocalDateTime;
 import java.util.UUID;

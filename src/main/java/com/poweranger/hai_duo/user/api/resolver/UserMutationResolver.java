@@ -1,6 +1,6 @@
 package com.poweranger.hai_duo.user.api.resolver;
 
-import com.poweranger.hai_duo.user.api.dto.LevelUpResultDto;
+import com.poweranger.hai_duo.learning.api.dto.LevelUpResultDto;
 import com.poweranger.hai_duo.user.application.service.UserService;
 import com.poweranger.hai_duo.user.api.dto.UserDto;
 import lombok.RequiredArgsConstructor;

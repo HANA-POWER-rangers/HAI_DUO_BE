@@ -2,8 +2,8 @@ package com.poweranger.hai_duo.user.application.processor;
 
 import com.poweranger.hai_duo.global.exception.GeneralException;
 import com.poweranger.hai_duo.global.response.code.ErrorStatus;
-import com.poweranger.hai_duo.user.domain.entity.GameCharacter;
-import com.poweranger.hai_duo.user.domain.entity.Level;
+import com.poweranger.hai_duo.user.domain.entity.mysql.GameCharacter;
+import com.poweranger.hai_duo.learning.domain.entity.Level;
 import com.poweranger.hai_duo.user.domain.repository.CharacterRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
