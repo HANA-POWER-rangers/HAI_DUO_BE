@@ -1,6 +1,5 @@
 package com.poweranger.hai_duo.learning.api.dto;
 
-import com.poweranger.hai_duo.user.api.dto.CharacterDto;
 import lombok.Builder;
 
 public record LevelUpResultDto(

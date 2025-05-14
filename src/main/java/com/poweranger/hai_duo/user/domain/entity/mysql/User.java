@@ -1,5 +1,6 @@
 package com.poweranger.hai_duo.user.domain.entity.mysql;
 
+import com.poweranger.hai_duo.learning.domain.entity.GameCharacter;
 import com.poweranger.hai_duo.learning.domain.entity.Level;
 import jakarta.persistence.*;
 import lombok.*;

@@ -1,6 +1,6 @@
-package com.poweranger.hai_duo.user.api.dto;
+package com.poweranger.hai_duo.learning.api.dto;
 
-import com.poweranger.hai_duo.user.domain.entity.mysql.GameCharacter;
+import com.poweranger.hai_duo.learning.domain.entity.GameCharacter;
 
 public record CharacterDto(Long characterId, String characterName) {
 

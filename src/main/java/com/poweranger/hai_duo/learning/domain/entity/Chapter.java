@@ -1,6 +1,5 @@
 package com.poweranger.hai_duo.learning.domain.entity;
 
-import com.poweranger.hai_duo.user.domain.entity.mysql.GameCharacter;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

@@ -2,7 +2,7 @@ package com.poweranger.hai_duo.user.api.dto;
 
 import java.time.LocalDateTime;
 
-import com.poweranger.hai_duo.user.domain.entity.mysql.GameCharacter;
+import com.poweranger.hai_duo.learning.domain.entity.GameCharacter;
 import com.poweranger.hai_duo.learning.domain.entity.Level;
 import com.poweranger.hai_duo.user.domain.entity.mysql.User;
 

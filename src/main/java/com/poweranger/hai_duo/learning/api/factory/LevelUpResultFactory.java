@@ -1,8 +1,8 @@
 package com.poweranger.hai_duo.learning.api.factory;
 
-import com.poweranger.hai_duo.user.api.dto.CharacterDto;
+import com.poweranger.hai_duo.learning.api.dto.CharacterDto;
 import com.poweranger.hai_duo.learning.api.dto.LevelUpResultDto;
-import com.poweranger.hai_duo.user.domain.entity.mysql.GameCharacter;
+import com.poweranger.hai_duo.learning.domain.entity.GameCharacter;
 import com.poweranger.hai_duo.user.domain.entity.mysql.User;
 
 public class LevelUpResultFactory {
