@@ -4,7 +4,7 @@ import com.poweranger.hai_duo.progress.api.dto.ChapterResponseDto;
 import com.poweranger.hai_duo.progress.api.dto.LevelResponseDto;
 import com.poweranger.hai_duo.progress.api.dto.ProgressResponseDto;
 import com.poweranger.hai_duo.progress.api.dto.StageResponseDto;
-import com.poweranger.hai_duo.user.application.service.UserProgressService;
+import com.poweranger.hai_duo.progress.application.service.UserProgressService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -26,17 +26,17 @@ public class UserProgressController {
 
     @GetMapping("/{userId}/level")
     public ResponseEntity<LevelResponseDto> getCurrentLevel(@PathVariable Long userId) {
-        return ResponseEntity.ok(userProgressService.getCurrentLevel(userId));
+        return ResponseEntity.ok(userProgressService.getLatestLevel(userId));
     }
 
     @GetMapping("/{userId}/chapter")
     public ResponseEntity<ChapterResponseDto> getCurrentChapter(@PathVariable Long userId) {
-        return ResponseEntity.ok(userProgressService.getCurrentChapter(userId));
+        return ResponseEntity.ok(userProgressService.getLatestChapter(userId));
     }
 
     @GetMapping("/{userId}/stage")
     public ResponseEntity<StageResponseDto> getCurrentStage(@PathVariable Long userId) {
-        return ResponseEntity.ok(userProgressService.getCurrentStage(userId));
+        return ResponseEntity.ok(userProgressService.getLatestStage(userId));
     }
 
 }

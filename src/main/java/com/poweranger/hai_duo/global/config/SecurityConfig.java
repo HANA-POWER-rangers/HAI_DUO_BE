@@ -34,7 +34,8 @@ public class SecurityConfig {
                                 "/swagger-resources/**",
                                 "/webjars/**",
                                 "/graphql",
-                                "/api/users/temp"
+                                "/api/users/temp",
+                                "/api/**"
                         ).permitAll()
                         .anyRequest().authenticated()
                 )
