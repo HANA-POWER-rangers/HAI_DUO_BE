@@ -24,7 +24,10 @@ public enum ErrorStatus implements BaseCode {
 
     // 학습 관련
     STAGE_NOT_FOUND(HttpStatus.NOT_FOUND, "STAGE4001", "해당 스테이지가 존재하지 않습니다."),
-    CHAPTER_NOT_FOUND(HttpStatus.NOT_FOUND, "CHAPTER4001", "해당 챕터가 존재하지 않습니다.");
+    CHAPTER_NOT_FOUND(HttpStatus.NOT_FOUND, "CHAPTER4001", "해당 챕터가 존재하지 않습니다."),
+
+    // 퀴즈 관련
+    QUIZ_NOT_FOUND(HttpStatus.NOT_FOUND, "QUIZ4001", "해당 퀴즈가 존재하지 않습니다.");
 
     private final HttpStatus httpStatus;
     private final String code;
