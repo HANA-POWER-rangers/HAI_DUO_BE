@@ -8,6 +8,7 @@ import com.poweranger.hai_duo.quiz.domain.entity.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.function.Function;
 
@@ -107,6 +108,7 @@ public class QuizDtoFactory {
                     case OX -> getOXQuizByStageId(stage.getStageId());
                     case BLANK -> getBlankQuizByStageId(stage.getStageId());
                 })
+                .filter(Objects::nonNull)
                 .toList();
     }
 
