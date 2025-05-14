@@ -2,14 +2,15 @@ package com.poweranger.hai_duo.user.application.service;
 
 import com.poweranger.hai_duo.global.exception.GeneralException;
 import com.poweranger.hai_duo.global.response.code.ErrorStatus;
-import com.poweranger.hai_duo.learning.domain.entity.Chapter;
-import com.poweranger.hai_duo.learning.domain.entity.Level;
-import com.poweranger.hai_duo.learning.domain.entity.Stage;
-import com.poweranger.hai_duo.learning.domain.repository.LevelRepository;
-import com.poweranger.hai_duo.quiz.api.dto.ChapterResponseDto;
-import com.poweranger.hai_duo.quiz.api.dto.LevelResponseDto;
+import com.poweranger.hai_duo.progress.domain.entity.Chapter;
+import com.poweranger.hai_duo.progress.domain.entity.Level;
+import com.poweranger.hai_duo.progress.domain.entity.Stage;
+import com.poweranger.hai_duo.progress.domain.repository.LevelRepository;
+import com.poweranger.hai_duo.progress.api.dto.ChapterResponseDto;
+import com.poweranger.hai_duo.progress.api.dto.LevelResponseDto;
 import com.poweranger.hai_duo.quiz.api.dto.ProgressResponseDto;
-import com.poweranger.hai_duo.quiz.api.dto.StageResponseDto;
+import com.poweranger.hai_duo.progress.api.dto.StageResponseDto;
+import com.poweranger.hai_duo.quiz.api.factory.ProgressDtoFactory;
 import com.poweranger.hai_duo.quiz.domain.repository.StageRepository;
 import com.poweranger.hai_duo.user.domain.entity.mongodb.UserQuizLog;
 import com.poweranger.hai_duo.user.domain.entity.mysql.User;
@@ -29,6 +30,7 @@ public class UserProgressService {
     private final StageRepository stageRepository;
     private final LevelRepository levelRepository;
     private final UserRepository userRepository;
+    private final ProgressDtoFactory progressDtoFactory;
 
     public Long getLatestStageIdFromLog(Long userId) {
         UserQuizLog log = mongoTemplate.findOne(
@@ -68,19 +70,8 @@ public class UserProgressService {
     public ProgressResponseDto getCurrentProgress(Long userId) {
         Stage stage = findStageByLatestLog(userId);
         Chapter chapter = stage.getChapter();
-
-        User user = userRepository.findById(userId)
-                .orElseThrow(() -> new GeneralException(ErrorStatus.USER_NOT_FOUND));
-
-        Level level = levelRepository.findById(user.getLevel().getLevelId())
-                .orElseThrow(() -> new GeneralException(ErrorStatus.LEVEL_NOT_FOUND));
-
-        return ProgressResponseDto.builder()
-                .levelId(level.getLevelId())
-                .chapterId(chapter.getChapterId())
-                .stageId(stage.getStageId())
-                .stageName(stage.getStageName())
-                .build();
+        Level level = findLevelByUser(userId);
+        return progressDtoFactory.toProgressResponseDto(level, chapter, stage);
     }
 
     private Stage findStageByLatestLog(Long userId) {
@@ -89,11 +80,14 @@ public class UserProgressService {
     }
 
     private Level findLevelByUser(Long userId) {
-        User user = userRepository.findById(userId)
-                .orElseThrow(() -> new GeneralException(ErrorStatus.USER_NOT_FOUND));
-
+        User user = findUserById(userId);
         return levelRepository.findById(user.getLevel().getLevelId())
                 .orElseThrow(() -> new GeneralException(ErrorStatus.LEVEL_NOT_FOUND));
+    }
+
+    private User findUserById(Long userId) {
+        return userRepository.findById(userId)
+                .orElseThrow(() -> new GeneralException(ErrorStatus.USER_NOT_FOUND));
     }
 
 }

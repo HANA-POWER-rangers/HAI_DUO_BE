@@ -1,6 +1,6 @@
-package com.poweranger.hai_duo.learning.api.dto;
+package com.poweranger.hai_duo.progress.api.dto;
 
-import com.poweranger.hai_duo.learning.domain.entity.GameCharacter;
+import com.poweranger.hai_duo.progress.domain.entity.GameCharacter;
 
 public record CharacterDto(Long characterId, String characterName) {
 

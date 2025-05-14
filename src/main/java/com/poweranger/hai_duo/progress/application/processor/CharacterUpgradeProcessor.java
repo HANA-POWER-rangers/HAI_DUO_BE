@@ -1,10 +1,10 @@
-package com.poweranger.hai_duo.learning.application.processor;
+package com.poweranger.hai_duo.progress.application.processor;
 
 import com.poweranger.hai_duo.global.exception.GeneralException;
 import com.poweranger.hai_duo.global.response.code.ErrorStatus;
-import com.poweranger.hai_duo.learning.domain.entity.GameCharacter;
-import com.poweranger.hai_duo.learning.domain.entity.Level;
-import com.poweranger.hai_duo.learning.domain.repository.CharacterRepository;
+import com.poweranger.hai_duo.progress.domain.entity.GameCharacter;
+import com.poweranger.hai_duo.progress.domain.entity.Level;
+import com.poweranger.hai_duo.progress.domain.repository.CharacterRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 

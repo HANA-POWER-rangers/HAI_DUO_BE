@@ -1,4 +1,4 @@
-package com.poweranger.hai_duo.quiz.api.dto;
+package com.poweranger.hai_duo.progress.api.dto;
 
 public record LevelResponseDto(Long levelId) {
 }

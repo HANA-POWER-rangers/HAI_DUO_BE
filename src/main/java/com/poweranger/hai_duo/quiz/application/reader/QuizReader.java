@@ -1,6 +1,6 @@
 package com.poweranger.hai_duo.quiz.application.reader;
 
-import com.poweranger.hai_duo.learning.domain.entity.Stage;
+import com.poweranger.hai_duo.progress.domain.entity.Stage;
 import com.poweranger.hai_duo.quiz.domain.entity.*;
 import com.poweranger.hai_duo.quiz.domain.repository.*;
 import lombok.RequiredArgsConstructor;

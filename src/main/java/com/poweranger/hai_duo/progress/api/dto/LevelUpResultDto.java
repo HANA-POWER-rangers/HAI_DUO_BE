@@ -1,4 +1,4 @@
-package com.poweranger.hai_duo.learning.api.dto;
+package com.poweranger.hai_duo.progress.api.dto;
 
 import lombok.Builder;
 
