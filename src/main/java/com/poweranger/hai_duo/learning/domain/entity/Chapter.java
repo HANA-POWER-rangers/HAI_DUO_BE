@@ -1,5 +1,6 @@
 package com.poweranger.hai_duo.learning.domain.entity;
 
+import com.poweranger.hai_duo.user.domain.entity.mysql.GameCharacter;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -14,9 +15,9 @@ public class Chapter {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long chapterId;
 
-    @ManyToOne
-    @JoinColumn(name = "level_id")
-    private Level level;
+    @OneToOne
+    @JoinColumn(name = "character_id")
+    private GameCharacter character;
 
     @Column(nullable = false, updatable = false)
     private LocalDateTime createdAt = LocalDateTime.now();
