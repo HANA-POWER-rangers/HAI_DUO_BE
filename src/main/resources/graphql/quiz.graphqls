@@ -5,25 +5,6 @@ extend type Query {
     getQuizzesByChapterIdAndType(chapterId: ID!, quizType: QuizType!): [QuizUnionDto!]!
 }
 
-extend type Mutation {
-    submitQuiz(input: SubmitQuizInputDto!): SubmitQuizPayloadDto!
-}
-
-input SubmitQuizInputDto {
-    userId: String!
-    stageId: ID!
-    quizType: QuizType!
-    selectedOption: String!
-    elapsedTime: Float
-}
-
-type SubmitQuizPayloadDto {
-    isCorrect: Boolean!
-    correctAnswer: String!
-    feedback: String!
-}
-
-
 type QuizByChapterIdDto {
     chapterId: ID!
     quizzes: [QuizByStageIdDto!]!

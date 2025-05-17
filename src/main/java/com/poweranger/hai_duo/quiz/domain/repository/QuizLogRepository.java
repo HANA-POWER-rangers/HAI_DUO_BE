@@ -15,16 +15,14 @@ public class QuizLogRepository {
 
     private final MongoTemplate mongoTemplate;
 
-    public void save(SubmitQuizInputDto input, boolean isCorrect, String correctAnswer) {
+    public void save(SubmitQuizInputDto input) {
         Map<String, Object> doc = new HashMap<>();
         doc.put("userId", input.userId());
         doc.put("stageId", input.stageId());
         doc.put("quizType", input.quizType());
         doc.put("selectedOption", input.selectedOption());
-        doc.put("correctAnswer", correctAnswer);
-        doc.put("isCorrect", isCorrect);
-        doc.put("submittedAt", Instant.now());
         doc.put("elapsedTime", input.elapsedTime());
+        doc.put("submittedAt", Instant.now());
 
         mongoTemplate.save(doc, "user_quiz_logs");
     }
