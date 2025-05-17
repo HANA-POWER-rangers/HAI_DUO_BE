@@ -7,7 +7,6 @@ import com.poweranger.hai_duo.user.api.dto.UserAccuracyByChapterDto;
 import com.poweranger.hai_duo.user.api.dto.UserAccuracyByStageDto;
 import com.poweranger.hai_duo.user.api.dto.UserAccuracyDto;
 import com.poweranger.hai_duo.user.api.factory.UserAccuracyDtoFactory;
-import com.poweranger.hai_duo.user.api.factory.UserFactory;
 import lombok.RequiredArgsConstructor;
 import org.bson.Document;
 import org.springframework.data.mongodb.core.MongoTemplate;
@@ -44,8 +43,6 @@ public class UserAccuracyService {
         Document result = executeAggregation(aggregation);
         return userAccuracyDtoFactory.buildUserAccuracyDtoByChapter(result, chapterId);
     }
-
-    // --- Aggregation Builders ---
 
     private Aggregation buildUserAggregation(Long userId) {
         return Aggregation.newAggregation(
@@ -92,8 +89,6 @@ public class UserAccuracyService {
         validateAggregationResult(result);
         return result;
     }
-
-    // --- Validation ---
 
     private void validateAggregationResult(Document result) {
         if (result == null) {
