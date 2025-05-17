@@ -1,5 +1,6 @@
 package com.poweranger.hai_duo.quiz.api.controller;
 
+import com.poweranger.hai_duo.global.response.ApiResponse;
 import com.poweranger.hai_duo.global.response.code.SuccessStatus;
 import com.poweranger.hai_duo.quiz.api.dto.SubmitQuizInputDto;
 import com.poweranger.hai_duo.quiz.application.service.QuizSubmissionService;
@@ -17,7 +18,8 @@ public class QuizController {
     private final QuizSubmissionService quizSubmissionService;
 
     @PostMapping("/submit")
-    public SuccessStatus submitQuiz(@RequestBody SubmitQuizInputDto input) {
-        return quizSubmissionService.submitQuiz(input);
+    public ApiResponse<SuccessStatus> submitQuiz(@RequestBody SubmitQuizInputDto input) {
+        SuccessStatus result = quizSubmissionService.submitQuiz(input);
+        return ApiResponse.of(result, result);
     }
 }

@@ -5,7 +5,6 @@ import com.poweranger.hai_duo.progress.domain.entity.Stage;
 import com.poweranger.hai_duo.quiz.api.dto.*;
 import com.poweranger.hai_duo.quiz.application.reader.QuizReader;
 import com.poweranger.hai_duo.quiz.domain.entity.*;
-import com.poweranger.hai_duo.quiz.domain.entity.mysql.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 import java.util.List;
