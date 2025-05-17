@@ -6,6 +6,7 @@ type Mutation {
 type Query {
   getUserById(userId: ID!): UserDto
   getUserQuizLogs(userId: ID!): [UserProgressLog!]!
+  getUserAccuracy(userId: ID!): UserAccuracyDto!
 }
 
 type UserDto {
@@ -42,4 +43,12 @@ type UserProgressLog {
   answer: String!
   responseTime: Float!
   answeredAt: String!
+}
+
+
+type UserAccuracyDto {
+  userId: ID!
+  totalCount: Int!
+  correctCount: Int!
+  accuracyRate: Float!
 }
