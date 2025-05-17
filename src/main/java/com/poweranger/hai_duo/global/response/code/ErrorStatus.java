@@ -27,7 +27,13 @@ public enum ErrorStatus implements BaseCode {
     CHAPTER_NOT_FOUND(HttpStatus.NOT_FOUND, "CHAPTER4001", "해당 챕터가 존재하지 않습니다."),
 
     // 퀴즈 관련
-    QUIZ_NOT_FOUND(HttpStatus.NOT_FOUND, "QUIZ4001", "해당 퀴즈가 존재하지 않습니다.");
+    QUIZ_NOT_FOUND(HttpStatus.NOT_FOUND, "QUIZ4001", "해당 퀴즈가 존재하지 않습니다."),
+    QUIZ_TYPE_NOT_FOUND(HttpStatus.NOT_FOUND, "QUIZ4002", "그 어떤 퀴즈 타입도 존재하지 않습니다."),
+    QUIZ_MEANING_NOT_FOUND(HttpStatus.NOT_FOUND, "QUIZ4003", "MEANING 퀴즈 타입이 존재하지 않습니다."),
+    QUIZ_OX_NOT_FOUND(HttpStatus.NOT_FOUND, "QUIZ4004", "OX 퀴즈 타입이 존재하지 않습니다."),
+    QUIZ_CARD_NOT_FOUND(HttpStatus.NOT_FOUND, "QUIZ4005", "CARD 퀴즈 타입이 존재하지 않습니다."),
+    QUIZ_BLANK_NOT_FOUND(HttpStatus.NOT_FOUND, "QUIZ4006", "BLANK 퀴즈 타입이 존재하지 않습니다.");
+
 
     private final HttpStatus httpStatus;
     private final String code;

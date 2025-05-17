@@ -14,7 +14,7 @@ import java.util.List;
 
 @Service
 @RequiredArgsConstructor
-public class QuizService {
+public class QuizInquiryService {
 
     private final StageRepository stageRepository;
     private final ChapterRepository chapterRepository;

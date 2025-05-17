@@ -1,7 +1,10 @@
 package com.poweranger.hai_duo.quiz.application.reader;
 
 import com.poweranger.hai_duo.progress.domain.entity.Stage;
-import com.poweranger.hai_duo.quiz.domain.entity.*;
+import com.poweranger.hai_duo.quiz.domain.entity.QuizBlank;
+import com.poweranger.hai_duo.quiz.domain.entity.QuizCard;
+import com.poweranger.hai_duo.quiz.domain.entity.QuizMeaning;
+import com.poweranger.hai_duo.quiz.domain.entity.QuizOX;
 import com.poweranger.hai_duo.quiz.domain.repository.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
