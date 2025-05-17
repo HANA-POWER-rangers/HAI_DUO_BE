@@ -1,7 +1,6 @@
 package com.poweranger.hai_duo.user.application.service;
 
 import com.poweranger.hai_duo.global.exception.GeneralException;
-import com.poweranger.hai_duo.global.response.ApiResponse;
 import com.poweranger.hai_duo.global.response.code.ErrorStatus;
 import com.poweranger.hai_duo.user.api.dto.UserAccuracyDto;
 import lombok.RequiredArgsConstructor;
@@ -18,17 +17,12 @@ public class UserAccuracyService {
     private final MongoTemplate mongoTemplate;
 
     public UserAccuracyDto getUserAccuracy(Long userId) {
-        AggregationResults<Document> results = executeAggregation(userId);
-        Document result = results.getUniqueMappedResult();
-
-        if (result == null || result.get("_id") == null) {
-            throw new GeneralException(ErrorStatus.USER_ACCURACY_NOT_FOUND);
-        }
-
-        return convertToDto(result);
+        Document result = fetchAggregationResult(userId);
+        validateAggregationResult(result);
+        return buildUserAccuracyDto(result);
     }
 
-    private AggregationResults<Document> executeAggregation(Long userId) {
+    private Document fetchAggregationResult(Long userId) {
         MatchOperation match = Aggregation.match(Criteria.where("userId").is(userId));
 
         GroupOperation group = Aggregation.group("userId")
@@ -38,15 +32,45 @@ public class UserAccuracyService {
                 ).then(1).otherwise(0)).as("correctCount");
 
         Aggregation aggregation = Aggregation.newAggregation(match, group);
-        return mongoTemplate.aggregate(aggregation, "user_progress_logs", Document.class);
+        AggregationResults<Document> results = mongoTemplate.aggregate(aggregation, "user_progress_logs", Document.class);
+
+        return results.getUniqueMappedResult();
     }
 
-    private UserAccuracyDto convertToDto(Document result) {
-        Long userId = ((Number) result.get("_id")).longValue();
-        int total = ((Number) result.get("totalCount")).intValue();
-        int correct = ((Number) result.get("correctCount")).intValue();
-        float accuracyRate = total > 0 ? (correct / (float) total) * 100 : 0.0f;
+    private void validateAggregationResult(Document result) {
+        if (result == null || result.get("_id") == null) {
+            throw new GeneralException(ErrorStatus.USER_ACCURACY_NOT_FOUND);
+        }
+    }
+
+    private UserAccuracyDto buildUserAccuracyDto(Document result) {
+        Long userId = convertToLong(result.get("_id"));
+        int total = convertToInt(result.get("totalCount"));
+        int correct = convertToInt(result.get("correctCount"));
+        float accuracyRate = calculateAccuracyRate(total, correct);
 
         return new UserAccuracyDto(userId, total, correct, accuracyRate);
+    }
+
+    private Long convertToLong(Object value) {
+        if (value instanceof Number number) {
+            return number.longValue();
+        }
+        throw new GeneralException(ErrorStatus.USER_ACCURACY_NOT_FOUND);
+    }
+
+    private int convertToInt(Object value) {
+        if (value instanceof Number number) {
+            return number.intValue();
+        }
+        return 0;
+    }
+
+    private float calculateAccuracyRate(int total, int correct) {
+        if (total == 0) {
+            return 0.0f;
+        }
+        float rawRate = ((float) correct / total) * 100;
+        return Math.round(rawRate * 100) / 100.0f;
     }
 }
