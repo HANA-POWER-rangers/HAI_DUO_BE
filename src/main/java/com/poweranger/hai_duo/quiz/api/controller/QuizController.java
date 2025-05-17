@@ -20,6 +20,6 @@ public class QuizController {
     @PostMapping("/submit")
     public ApiResponse<SuccessStatus> submitQuiz(@RequestBody SubmitQuizInputDto input) {
         SuccessStatus result = quizSubmissionService.submitQuiz(input);
-        return ApiResponse.of(result, result);
+        return ApiResponse.onSuccess(result);
     }
 }
