@@ -7,6 +7,7 @@ type Query {
   getUserById(userId: ID!): UserDto
   getUserQuizLogs(userId: ID!): [UserProgressLog!]!
   getUserAccuracy(userId: ID!): UserAccuracyDto!
+  getUserAccuracyByStage(userId: ID!, stageId: ID!): UserAccuracyByStageDto!
 }
 
 type UserDto {
@@ -52,3 +53,12 @@ type UserAccuracyDto {
   correctCount: Int
   accuracyRate: Float
 }
+
+type UserAccuracyByStageDto {
+  userId: ID
+  stageId: ID
+  totalCount: Int
+  correctCount: Int
+  accuracyRate: Float
+}
+
