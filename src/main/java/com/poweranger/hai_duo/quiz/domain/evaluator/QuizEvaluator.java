@@ -25,8 +25,8 @@ public class QuizEvaluator {
 
     public String getCorrectAnswer(Long stageId, String quizType) {
         return switch (quizType) {
-            case "MEANING" -> quizMeaningRepository.findByStage_StageId(stageId)
-                    .orElseThrow(() -> new GeneralException(ErrorStatus.QUIZ_MEANING_NOT_FOUND))
+            case "MEAN" -> quizMeaningRepository.findByStage_StageId(stageId)
+                    .orElseThrow(() -> new GeneralException(ErrorStatus.QUIZ_MEAN_NOT_FOUND))
                     .getMeaning();
             case "OX" -> String.valueOf(
                     quizOXRepository.findByStage_StageId(stageId)
