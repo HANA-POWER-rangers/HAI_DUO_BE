@@ -3,7 +3,7 @@ package com.poweranger.hai_duo.quiz.api.resolver;
 import com.poweranger.hai_duo.quiz.api.dto.QuizByChapterIdDto;
 import com.poweranger.hai_duo.quiz.api.dto.QuizByStageIdDto;
 import com.poweranger.hai_duo.quiz.api.factory.QuizDtoFactory;
-import com.poweranger.hai_duo.quiz.application.service.QuizService;
+import com.poweranger.hai_duo.quiz.application.service.QuizInquiryService;
 import com.poweranger.hai_duo.quiz.domain.entity.QuizType;
 import lombok.RequiredArgsConstructor;
 import org.springframework.graphql.data.method.annotation.Argument;
@@ -16,12 +16,12 @@ import java.util.List;
 @RequiredArgsConstructor
 public class QuizQueryResolver {
 
-    private final QuizService quizService;
+    private final QuizInquiryService quizInquiryService;
     private final QuizDtoFactory quizDtoFactory;
 
     @QueryMapping
     public QuizByStageIdDto getQuizzesByStageId(@Argument Long stageId) {
-        return quizService.getQuizzesByStageId(stageId);
+        return quizInquiryService.getQuizzesByStageId(stageId);
     }
 
     @QueryMapping
@@ -36,7 +36,7 @@ public class QuizQueryResolver {
 
     @QueryMapping
     public QuizByChapterIdDto getQuizzesByChapterId(@Argument Long chapterId){
-        return quizService.getQuizzesByChapterId(chapterId);
+        return quizInquiryService.getQuizzesByChapterId(chapterId);
     }
 
     @QueryMapping
@@ -44,7 +44,7 @@ public class QuizQueryResolver {
             @Argument Long chapterId,
             @Argument QuizType quizType
     ) {
-        return quizService.getQuizzesByChapterIdAndType(chapterId, quizType);
+        return quizInquiryService.getQuizzesByChapterIdAndType(chapterId, quizType);
     }
 
 }

@@ -1,6 +1,6 @@
 package com.poweranger.hai_duo.quiz.domain.entity;
 
-import com.poweranger.hai_duo.learning.domain.entity.Stage;
+import com.poweranger.hai_duo.progress.domain.entity.Stage;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -8,6 +8,7 @@ import lombok.NoArgsConstructor;
 @Entity
 @NoArgsConstructor
 @Getter
+@Table(name = "quiz_ox")
 public class QuizOX {
 
     @Id

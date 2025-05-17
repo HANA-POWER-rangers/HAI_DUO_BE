@@ -2,8 +2,8 @@ package com.poweranger.hai_duo.quiz.application.service;
 
 import com.poweranger.hai_duo.global.response.code.ErrorStatus;
 import com.poweranger.hai_duo.global.exception.GeneralException;
-import com.poweranger.hai_duo.learning.domain.entity.Chapter;
-import com.poweranger.hai_duo.learning.domain.entity.Stage;
+import com.poweranger.hai_duo.progress.domain.entity.Chapter;
+import com.poweranger.hai_duo.progress.domain.entity.Stage;
 import com.poweranger.hai_duo.quiz.api.dto.*;
 import com.poweranger.hai_duo.quiz.api.factory.QuizDtoFactory;
 import com.poweranger.hai_duo.quiz.domain.entity.QuizType;
@@ -14,7 +14,7 @@ import java.util.List;
 
 @Service
 @RequiredArgsConstructor
-public class QuizService {
+public class QuizInquiryService {
 
     private final StageRepository stageRepository;
     private final ChapterRepository chapterRepository;

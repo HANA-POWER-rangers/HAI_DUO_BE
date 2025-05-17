@@ -1,8 +1,8 @@
-package com.poweranger.hai_duo.user.application.processor;
+package com.poweranger.hai_duo.progress.application.processor;
 
-import com.poweranger.hai_duo.user.domain.entity.Level;
-import com.poweranger.hai_duo.user.domain.entity.User;
-import com.poweranger.hai_duo.user.domain.repository.LevelRepository;
+import com.poweranger.hai_duo.progress.domain.entity.Level;
+import com.poweranger.hai_duo.user.domain.entity.mysql.User;
+import com.poweranger.hai_duo.progress.domain.repository.LevelRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 import java.util.List;

@@ -2,9 +2,9 @@ package com.poweranger.hai_duo.user.api.dto;
 
 import java.time.LocalDateTime;
 
-import com.poweranger.hai_duo.user.domain.entity.GameCharacter;
-import com.poweranger.hai_duo.user.domain.entity.Level;
-import com.poweranger.hai_duo.user.domain.entity.User;
+import com.poweranger.hai_duo.progress.domain.entity.GameCharacter;
+import com.poweranger.hai_duo.progress.domain.entity.Level;
+import com.poweranger.hai_duo.user.domain.entity.mysql.User;
 
 public record UserDto(
         Long userId,

@@ -1,13 +1,14 @@
 package com.poweranger.hai_duo.quiz.api.factory;
 
-import com.poweranger.hai_duo.learning.domain.entity.Chapter;
-import com.poweranger.hai_duo.learning.domain.entity.Stage;
+import com.poweranger.hai_duo.progress.domain.entity.Chapter;
+import com.poweranger.hai_duo.progress.domain.entity.Stage;
 import com.poweranger.hai_duo.quiz.api.dto.*;
 import com.poweranger.hai_duo.quiz.application.reader.QuizReader;
 import com.poweranger.hai_duo.quiz.domain.entity.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.function.Function;
 
@@ -107,6 +108,7 @@ public class QuizDtoFactory {
                     case OX -> getOXQuizByStageId(stage.getStageId());
                     case BLANK -> getBlankQuizByStageId(stage.getStageId());
                 })
+                .filter(Objects::nonNull)
                 .toList();
     }
 

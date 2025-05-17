@@ -1,4 +1,4 @@
-package com.poweranger.hai_duo.user.domain.entity;
+package com.poweranger.hai_duo.progress.domain.entity;
 
 import jakarta.persistence.*;
 import lombok.Getter;
