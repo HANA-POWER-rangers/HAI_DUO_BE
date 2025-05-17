@@ -2,7 +2,7 @@ package com.poweranger.hai_duo.user.api.dto;
 
 public record UserAccuracyDto(
         Long userId,
-        int totalCount,
-        int correctCount,
-        float accuracyRate
+        Integer totalCount,
+        Integer correctCount,
+        Float accuracyRate
 ) {}

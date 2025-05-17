@@ -1,11 +1,13 @@
 package com.poweranger.hai_duo.user.application.service;
 
+import com.poweranger.hai_duo.global.exception.GeneralException;
 import com.poweranger.hai_duo.global.response.ApiResponse;
+import com.poweranger.hai_duo.global.response.code.ErrorStatus;
 import com.poweranger.hai_duo.user.api.dto.UserAccuracyDto;
 import lombok.RequiredArgsConstructor;
+import org.bson.Document;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.aggregation.*;
-import org.bson.Document;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.stereotype.Service;
 
@@ -15,35 +17,36 @@ public class UserAccuracyService {
 
     private final MongoTemplate mongoTemplate;
 
-    public ApiResponse<UserAccuracyDto> getUserAccuracy(Long userId) {
-        Aggregation aggregation = buildAggregation(userId);
-        Document result = executeAggregation(aggregation);
-        return ApiResponse.onSuccess(mapToDto(userId, result));
-    }
+    public UserAccuracyDto getUserAccuracy(Long userId) {
+        AggregationResults<Document> results = executeAggregation(userId);
+        Document result = results.getUniqueMappedResult();
 
-    private Aggregation buildAggregation(Long userId) {
-        MatchOperation match = Aggregation.match(Criteria.where("userId").is(userId));
-        GroupOperation group = Aggregation.group("userId")
-                .count().as("totalCount")
-                .sum(ConditionalOperators.when(Criteria.where("isCorrect").is(true)).then(1).otherwise(0)).as("correctCount");
-
-        return Aggregation.newAggregation(match, group);
-    }
-
-    private Document executeAggregation(Aggregation aggregation) {
-        return mongoTemplate.aggregate(aggregation, "user_progress_logs", Document.class)
-                .getUniqueMappedResult();
-    }
-
-    private UserAccuracyDto mapToDto(Long userId, Document result) {
-        if (result == null) {
-            return new UserAccuracyDto(userId, 0, 0, 0.0f);
+        if (result == null || result.get("_id") == null) {
+            throw new GeneralException(ErrorStatus.USER_ACCURACY_NOT_FOUND);
         }
 
-        int total = result.getInteger("totalCount", 0);
-        int correct = result.getInteger("correctCount", 0);
-        float rate = total == 0 ? 0.0f : ((float) correct / total) * 100;
+        return convertToDto(result);
+    }
 
-        return new UserAccuracyDto(userId, total, correct, rate);
+    private AggregationResults<Document> executeAggregation(Long userId) {
+        MatchOperation match = Aggregation.match(Criteria.where("userId").is(userId));
+
+        GroupOperation group = Aggregation.group("userId")
+                .count().as("totalCount")
+                .sum(ConditionalOperators.when(
+                        ComparisonOperators.Eq.valueOf("isCorrect").equalToValue(true)
+                ).then(1).otherwise(0)).as("correctCount");
+
+        Aggregation aggregation = Aggregation.newAggregation(match, group);
+        return mongoTemplate.aggregate(aggregation, "user_progress_logs", Document.class);
+    }
+
+    private UserAccuracyDto convertToDto(Document result) {
+        Long userId = ((Number) result.get("_id")).longValue();
+        int total = ((Number) result.get("totalCount")).intValue();
+        int correct = ((Number) result.get("correctCount")).intValue();
+        float accuracyRate = total > 0 ? (correct / (float) total) * 100 : 0.0f;
+
+        return new UserAccuracyDto(userId, total, correct, accuracyRate);
     }
 }

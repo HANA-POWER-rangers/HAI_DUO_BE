@@ -33,7 +33,7 @@ public class UserQueryResolver {
     }
 
     @QueryMapping
-    public ApiResponse<UserAccuracyDto> getUserAccuracy(@Argument Long userId) {
+    public UserAccuracyDto getUserAccuracy(@Argument Long userId) {
         return userAccuracyService.getUserAccuracy(userId);
     }
 

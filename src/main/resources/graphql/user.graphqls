@@ -47,8 +47,8 @@ type UserProgressLog {
 
 
 type UserAccuracyDto {
-  userId: ID!
-  totalCount: Int!
-  correctCount: Int!
-  accuracyRate: Float!
+  userId: ID
+  totalCount: Int
+  correctCount: Int
+  accuracyRate: Float
 }
