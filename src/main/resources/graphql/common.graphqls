@@ -1,0 +1,6 @@
+enum QuizType {
+    MEAN
+    CARD
+    OX
+    BLANK
+}

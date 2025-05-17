@@ -17,4 +17,5 @@ public class UserQueryResolver {
     public UserDto getUserById(@Argument Long userId) {
         return userService.getUserDtoById(userId);
     }
+
 }

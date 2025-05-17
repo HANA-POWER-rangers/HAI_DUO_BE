@@ -1,11 +1,11 @@
-package com.poweranger.hai_duo.progress.api.controller;
+package com.poweranger.hai_duo.user.api.controller;
 
 import com.poweranger.hai_duo.global.response.ApiResponse;
 import com.poweranger.hai_duo.progress.api.dto.ChapterResponseDto;
 import com.poweranger.hai_duo.progress.api.dto.LevelResponseDto;
 import com.poweranger.hai_duo.progress.api.dto.ProgressResponseDto;
 import com.poweranger.hai_duo.progress.api.dto.StageResponseDto;
-import com.poweranger.hai_duo.progress.application.service.UserProgressService;
+import com.poweranger.hai_duo.user.application.service.UserProgressService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
