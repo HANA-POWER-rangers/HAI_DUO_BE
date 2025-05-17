@@ -1,4 +1,4 @@
-package com.poweranger.hai_duo.progress.application.service;
+package com.poweranger.hai_duo.user.application.service;
 
 import com.poweranger.hai_duo.global.exception.GeneralException;
 import com.poweranger.hai_duo.global.response.code.ErrorStatus;
@@ -11,7 +11,8 @@ import com.poweranger.hai_duo.progress.api.dto.LevelResponseDto;
 import com.poweranger.hai_duo.progress.api.dto.ProgressResponseDto;
 import com.poweranger.hai_duo.progress.api.dto.StageResponseDto;
 import com.poweranger.hai_duo.progress.api.factory.ProgressDtoFactory;
-import com.poweranger.hai_duo.user.domain.entity.mongodb.UserQuizLog;
+import com.poweranger.hai_duo.user.api.dto.UserProgressLogDto;
+import com.poweranger.hai_duo.user.domain.entity.mongodb.UserProgressLog;
 import com.poweranger.hai_duo.user.domain.entity.mysql.User;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Sort;
@@ -19,6 +20,8 @@ import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -29,17 +32,17 @@ public class UserProgressService {
     private final ProgressDtoFactory progressDtoFactory;
 
     public Long getLatestStageIdFromLog(Long userId) {
-        UserQuizLog log = mongoTemplate.findOne(
+        UserProgressLog log = mongoTemplate.findOne(
                 Query.query(Criteria.where("userId").is(userId))
                         .with(Sort.by(Sort.Direction.DESC, "answeredAt"))
                         .limit(1),
-                UserQuizLog.class
+                UserProgressLog.class
         );
         validateLogExists(log);
         return log.getStageId();
     }
 
-    private void validateLogExists(UserQuizLog log) {
+    private void validateLogExists(UserProgressLog log) {
         if (log == null) {
             throw new GeneralException(ErrorStatus.QUIZ_NOT_FOUND);
         }
@@ -74,4 +77,5 @@ public class UserProgressService {
         Long stageId = getLatestStageIdFromLog(userId);
         return progressReader.getStage(stageId);
     }
+
 }

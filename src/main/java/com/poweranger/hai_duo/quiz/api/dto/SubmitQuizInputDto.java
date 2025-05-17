@@ -5,5 +5,5 @@ public record SubmitQuizInputDto (
         Long stageId,
         String quizType,
         String selectedOption,
-        String elapsedTime
+        Float responseTime
 ){}

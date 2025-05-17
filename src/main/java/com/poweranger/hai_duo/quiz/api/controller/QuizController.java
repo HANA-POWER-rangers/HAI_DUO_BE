@@ -19,8 +19,7 @@ public class QuizController {
 
     @PostMapping("/submit")
     public ApiResponse<SubmitQuizResultDto> submitQuiz(@RequestBody SubmitQuizInputDto input) {
-        boolean isCorrect = quizSubmissionService.isCorrect(input.stageId(), input.quizType(), input.selectedOption());
-        quizSubmissionService.submitQuiz(input);
+        boolean isCorrect = quizSubmissionService.submitQuiz(input);
         return ApiResponse.onSuccess(new SubmitQuizResultDto(isCorrect));
     }
 }

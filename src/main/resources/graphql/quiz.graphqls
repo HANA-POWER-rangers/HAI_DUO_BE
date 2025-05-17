@@ -42,11 +42,4 @@ type QuizBlankDto {
     correctWord: String!
 }
 
-enum QuizType {
-    MEAN
-    CARD
-    OX
-    BLANK
-}
-
 union QuizUnionDto = QuizMeaningDto | QuizCardDto | QuizOXDto | QuizBlankDto

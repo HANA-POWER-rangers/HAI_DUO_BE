@@ -5,6 +5,7 @@ type Mutation {
 
 type Query {
   getUserById(userId: ID!): UserDto
+  getUserQuizLogs(userId: ID!): [UserProgressLog!]!
 }
 
 type UserDto {
@@ -29,4 +30,16 @@ type LevelUpResultDto {
 type CharacterDto {
   characterId: ID!
   characterName: String!
+}
+
+type UserProgressLog {
+  id: ID!
+  userId: ID!
+  stageId: ID!
+  quizType: QuizType!
+  isCorrect: Boolean!
+  selectedOption: String!
+  answer: String!
+  responseTime: Float!
+  answeredAt: String!
 }
