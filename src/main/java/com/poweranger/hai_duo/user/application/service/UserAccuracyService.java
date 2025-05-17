@@ -1,5 +1,6 @@
 package com.poweranger.hai_duo.user.application.service;
 
+import com.poweranger.hai_duo.global.response.ApiResponse;
 import com.poweranger.hai_duo.user.api.dto.UserAccuracyDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.mongodb.core.MongoTemplate;
@@ -14,10 +15,10 @@ public class UserAccuracyService {
 
     private final MongoTemplate mongoTemplate;
 
-    public UserAccuracyDto getUserAccuracy(Long userId) {
+    public ApiResponse<UserAccuracyDto> getUserAccuracy(Long userId) {
         Aggregation aggregation = buildAggregation(userId);
         Document result = executeAggregation(aggregation);
-        return mapToDto(userId, result);
+        return ApiResponse.onSuccess(mapToDto(userId, result));
     }
 
     private Aggregation buildAggregation(Long userId) {
