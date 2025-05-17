@@ -22,77 +22,106 @@ public class UserAccuracyService {
     private final StageRepository stageRepository;
 
     public UserAccuracyDto getUserAccuracy(Long userId) {
-        Document result = fetchOverallAggregationResult(userId);
-        validateAggregationResult(result);
+        Aggregation aggregation = buildUserAggregation(userId);
+        Document result = executeAggregation(aggregation);
         return buildUserAccuracyDto(result);
     }
 
     public UserAccuracyByStageDto getUserAccuracyByStage(Long userId, Long stageId) {
-        Document result = fetchStageAggregationResult(userId, stageId);
-        validateAggregationResult(result);
+        Aggregation aggregation = buildStageAggregation(userId, stageId);
+        Document result = executeAggregation(aggregation);
         return buildUserAccuracyDtoByStage(result);
     }
 
     public UserAccuracyByChapterDto getUserAccuracyByChapter(Long userId, Long chapterId) {
-        Document result = fetchChapterAggregationResult(userId, chapterId);
-        validateAggregationResult(result);
+        List<Long> stageIds = stageRepository.findStageIdsByChapterId(chapterId);
+        validateStageIds(stageIds);
+
+        Aggregation aggregation = buildChapterAggregation(userId, stageIds);
+        Document result = executeAggregation(aggregation);
         return buildUserAccuracyDtoByChapter(result, chapterId);
     }
 
-    private Document fetchOverallAggregationResult(Long userId) {
-        MatchOperation match = Aggregation.match(Criteria.where("userId").is(userId));
+    // --- Aggregation Builders ---
 
-        GroupOperation group = Aggregation.group("userId")
-                .count().as("totalCount")
-                .sum(ConditionalOperators.when(
-                        ComparisonOperators.Eq.valueOf("isCorrect").equalToValue(true)
-                ).then(1).otherwise(0)).as("correctCount");
-
-        Aggregation aggregation = Aggregation.newAggregation(match, group);
-        return mongoTemplate.aggregate(aggregation, "user_progress_logs", Document.class)
-                .getUniqueMappedResult();
+    private Aggregation buildUserAggregation(Long userId) {
+        return Aggregation.newAggregation(
+                Aggregation.match(Criteria.where("userId").is(userId)),
+                buildGroupOperation("userId")
+        );
     }
 
-    private Document fetchStageAggregationResult(Long userId, Long stageId) {
-        MatchOperation match = Aggregation.match(
-                Criteria.where("userId").is(userId).and("stageId").is(stageId)
+    private Aggregation buildStageAggregation(Long userId, Long stageId) {
+        return Aggregation.newAggregation(
+                Aggregation.match(Criteria.where("userId").is(userId).and("stageId").is(stageId.intValue())),
+                Aggregation.group("stageId")
+                        .first("userId").as("userId")
+                        .first("stageId").as("stageId")
+                        .count().as("totalCount")
+                        .sum(getCorrectCountCondition()).as("correctCount")
         );
-
-        GroupOperation group = Aggregation.group("stageId")
-                .first("userId").as("userId")
-                .first("stageId").as("stageId")
-                .count().as("totalCount")
-                .sum(ConditionalOperators.when(
-                        ComparisonOperators.Eq.valueOf("isCorrect").equalToValue(true)
-                ).then(1).otherwise(0)).as("correctCount");
-
-        Aggregation aggregation = Aggregation.newAggregation(match, group);
-        return mongoTemplate.aggregate(aggregation, "user_progress_logs", Document.class)
-                .getUniqueMappedResult();
     }
 
-    private Document fetchChapterAggregationResult(Long userId, Long chapterId) {
-        List<Long> stageIds = stageRepository.findStageIdsByChapterId(chapterId);
-
-        if (stageIds.isEmpty()) {
-            throw new GeneralException(ErrorStatus.USER_ACCURACY_NOT_FOUND);
-        }
-
-        MatchOperation match = Aggregation.match(
-                Criteria.where("userId").is(userId).and("stageId").in(stageIds)
+    private Aggregation buildChapterAggregation(Long userId, List<Long> stageIds) {
+        List<Integer> stageIdInts = stageIds.stream().map(Long::intValue).toList();
+        return Aggregation.newAggregation(
+                Aggregation.match(Criteria.where("userId").is(userId).and("stageId").in(stageIdInts)),
+                buildGroupOperation("userId")
         );
+    }
 
-        GroupOperation group = Aggregation.group("userId")
+    private GroupOperation buildGroupOperation(String field) {
+        return Aggregation.group(field)
                 .first("userId").as("userId")
                 .count().as("totalCount")
-                .sum(ConditionalOperators.when(
-                        ComparisonOperators.Eq.valueOf("isCorrect").equalToValue(true)
-                ).then(1).otherwise(0)).as("correctCount");
-
-        Aggregation aggregation = Aggregation.newAggregation(match, group);
-        return mongoTemplate.aggregate(aggregation, "user_progress_logs", Document.class)
-                .getUniqueMappedResult();
+                .sum(getCorrectCountCondition()).as("correctCount");
     }
+
+    private ConditionalOperators.Cond getCorrectCountCondition() {
+        return ConditionalOperators.when(
+                ComparisonOperators.Eq.valueOf("isCorrect").equalToValue(true)
+        ).then(1).otherwise(0);
+    }
+
+    private Document executeAggregation(Aggregation aggregation) {
+        Document result = mongoTemplate.aggregate(aggregation, "user_progress_logs", Document.class)
+                .getUniqueMappedResult();
+        validateAggregationResult(result);
+        return result;
+    }
+
+    // --- DTO Builders ---
+
+    private UserAccuracyDto buildUserAccuracyDto(Document result) {
+        return new UserAccuracyDto(
+                convertToLong(result.get("userId")),
+                convertToInt(result.get("totalCount")),
+                convertToInt(result.get("correctCount")),
+                calculateAccuracyRate(result)
+        );
+    }
+
+    private UserAccuracyByStageDto buildUserAccuracyDtoByStage(Document result) {
+        return new UserAccuracyByStageDto(
+                convertToLong(result.get("userId")),
+                convertToLong(result.get("stageId")),
+                convertToInt(result.get("totalCount")),
+                convertToInt(result.get("correctCount")),
+                calculateAccuracyRate(result)
+        );
+    }
+
+    private UserAccuracyByChapterDto buildUserAccuracyDtoByChapter(Document result, Long chapterId) {
+        return new UserAccuracyByChapterDto(
+                convertToLong(result.get("userId")),
+                chapterId,
+                convertToInt(result.get("totalCount")),
+                convertToInt(result.get("correctCount")),
+                calculateAccuracyRate(result)
+        );
+    }
+
+    // --- Validation ---
 
     private void validateAggregationResult(Document result) {
         if (result == null) {
@@ -100,33 +129,13 @@ public class UserAccuracyService {
         }
     }
 
-    private UserAccuracyDto buildUserAccuracyDto(Document result) {
-        Long userId = convertToLong(result.get("_id"));
-        int total = convertToInt(result.get("totalCount"));
-        int correct = convertToInt(result.get("correctCount"));
-        float accuracyRate = calculateAccuracyRate(total, correct);
-
-        return new UserAccuracyDto(userId, total, correct, accuracyRate);
+    private void validateStageIds(List<Long> stageIds) {
+        if (stageIds == null || stageIds.isEmpty()) {
+            throw new GeneralException(ErrorStatus.USER_ACCURACY_NOT_FOUND);
+        }
     }
 
-    private UserAccuracyByStageDto buildUserAccuracyDtoByStage(Document result) {
-        Long userId = convertToLong(result.get("userId"));
-        Long stageId = convertToLong(result.get("stageId"));
-        int total = convertToInt(result.get("totalCount"));
-        int correct = convertToInt(result.get("correctCount"));
-        float accuracyRate = calculateAccuracyRate(total, correct);
-
-        return new UserAccuracyByStageDto(userId, stageId,total, correct, accuracyRate);
-    }
-
-    private UserAccuracyByChapterDto buildUserAccuracyDtoByChapter(Document result, Long chapterId) {
-        Long userId = convertToLong(result.get("userId"));
-        int total = convertToInt(result.get("totalCount"));
-        int correct = convertToInt(result.get("correctCount"));
-        float accuracyRate = calculateAccuracyRate(total, correct);
-
-        return new UserAccuracyByChapterDto(userId, chapterId, total, correct, accuracyRate);
-    }
+    // --- Converter / Calculator ---
 
     private Long convertToLong(Object value) {
         if (value instanceof Number number) {
@@ -142,12 +151,10 @@ public class UserAccuracyService {
         return 0;
     }
 
-    private float calculateAccuracyRate(int total, int correct) {
-        if (total == 0) {
-            return 0.0f;
-        }
-        float rawRate = ((float) correct / total) * 100;
-        return Math.round(rawRate * 100) / 100.0f;
+    private float calculateAccuracyRate(Document result) {
+        int total = convertToInt(result.get("totalCount"));
+        int correct = convertToInt(result.get("correctCount"));
+        if (total == 0) return 0.0f;
+        return Math.round(((float) correct / total) * 10000) / 100.0f;
     }
-
 }
