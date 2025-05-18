@@ -1,61 +1,58 @@
 package com.poweranger.hai_duo.user.api.factory;
 
-import com.poweranger.hai_duo.global.exception.GeneralException;
-import com.poweranger.hai_duo.global.response.code.ErrorStatus;
-import com.poweranger.hai_duo.user.api.dto.UserAccuracyByChapterDto;
-import com.poweranger.hai_duo.user.api.dto.UserAccuracyByLevelDto;
-import com.poweranger.hai_duo.user.api.dto.UserAccuracyByStageDto;
-import com.poweranger.hai_duo.user.api.dto.UserAccuracyDto;
+import com.poweranger.hai_duo.user.api.dto.*;
 import org.bson.Document;
 import org.springframework.stereotype.Component;
 
 @Component
 public class UserAccuracyDtoFactory {
 
-    public UserAccuracyDto buildUserAccuracyDto(Document result) {
+    public UserAccuracyDto buildUserAccuracyDto(Long userId, Document result) {
         return new UserAccuracyDto(
-                convertToLong(result.get("userId")),
-                convertToInt(result.get("totalCount")),
-                convertToInt(result.get("correctCount")),
-                calculateAccuracyRate(result)
+                userId,
+                getIntValue(result, "totalCount"),
+                getIntValue(result, "correctCount"),
+                getAccuracyRate(result)
         );
     }
 
-    public UserAccuracyByStageDto buildUserAccuracyDtoByStage(Document result) {
+    public UserAccuracyByStageDto buildUserAccuracyDtoByStage(Long userId, Long stageId, Document result) {
         return new UserAccuracyByStageDto(
-                convertToLong(result.get("userId")),
-                convertToLong(result.get("stageId")),
-                convertToInt(result.get("totalCount")),
-                convertToInt(result.get("correctCount")),
-                calculateAccuracyRate(result)
+                userId,
+                stageId,
+                getIntValue(result, "totalCount"),
+                getIntValue(result, "correctCount"),
+                getAccuracyRate(result)
         );
     }
 
-    public UserAccuracyByChapterDto buildUserAccuracyDtoByChapter(Document result, Long chapterId) {
+    public UserAccuracyByChapterDto buildUserAccuracyDtoByChapter(Long userId, Long chapterId, Document result) {
         return new UserAccuracyByChapterDto(
-                convertToLong(result.get("userId")),
+                userId,
                 chapterId,
-                convertToInt(result.get("totalCount")),
-                convertToInt(result.get("correctCount")),
-                calculateAccuracyRate(result)
+                getIntValue(result, "totalCount"),
+                getIntValue(result, "correctCount"),
+                getAccuracyRate(result)
         );
     }
 
-    public UserAccuracyByLevelDto buildUserAccuracyDtoByLevel(Document result, Long levelId) {
+    public UserAccuracyByLevelDto buildUserAccuracyDtoByLevel(Long userId, Long levelId, Document result) {
         return new UserAccuracyByLevelDto(
-                convertToLong(result.get("userId")),
+                userId,
                 levelId,
-                convertToInt(result.get("totalCount")),
-                convertToInt(result.get("correctCount")),
-                calculateAccuracyRate(result)
+                getIntValue(result, "totalCount"),
+                getIntValue(result, "correctCount"),
+                getAccuracyRate(result)
         );
     }
 
-    private Long convertToLong(Object value) {
-        if (value instanceof Number number) {
-            return number.longValue();
+    private int getIntValue(Document doc, String key) {
+        if (doc == null || doc.get(key) == null) {
+            return 0;
         }
-        throw new GeneralException(ErrorStatus.USER_ACCURACY_NOT_FOUND);
+
+        Object value = doc.get(key);
+        return convertToInt(value);
     }
 
     private int convertToInt(Object value) {
@@ -65,11 +62,10 @@ public class UserAccuracyDtoFactory {
         return 0;
     }
 
-    private float calculateAccuracyRate(Document result) {
-        int total = convertToInt(result.get("totalCount"));
-        int correct = convertToInt(result.get("correctCount"));
+    private float getAccuracyRate(Document doc) {
+        int total = getIntValue(doc, "totalCount");
+        int correct = getIntValue(doc, "correctCount");
         if (total == 0) return 0.0f;
         return Math.round(((float) correct / total) * 10000) / 100.0f;
     }
-
 }

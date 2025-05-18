@@ -29,13 +29,13 @@ public class UserAccuracyService {
     public UserAccuracyDto getUserAccuracy(Long userId) {
         Aggregation aggregation = buildUserAggregation(userId);
         Document result = executeAggregation(aggregation);
-        return userAccuracyDtoFactory.buildUserAccuracyDto(result);
+        return userAccuracyDtoFactory.buildUserAccuracyDto(userId, result);
     }
 
     public UserAccuracyByStageDto getUserAccuracyByStage(Long userId, Long stageId) {
         Aggregation aggregation = buildStageAggregation(userId, stageId);
         Document result = executeAggregation(aggregation);
-        return userAccuracyDtoFactory.buildUserAccuracyDtoByStage(result);
+        return userAccuracyDtoFactory.buildUserAccuracyDtoByStage(userId, stageId, result);
     }
 
     public UserAccuracyByChapterDto getUserAccuracyByChapter(Long userId, Long chapterId) {
@@ -44,13 +44,13 @@ public class UserAccuracyService {
 
         Aggregation aggregation = buildChapterAggregation(userId, stageIds);
         Document result = executeAggregation(aggregation);
-        return userAccuracyDtoFactory.buildUserAccuracyDtoByChapter(result, chapterId);
+        return userAccuracyDtoFactory.buildUserAccuracyDtoByChapter(userId, chapterId, result);
     }
 
     public UserAccuracyByLevelDto getUserAccuracyByLevel(Long userId, Long levelId) {
         Aggregation aggregation = buildLevelAggregation(userId, levelId);
         Document result = executeAggregation(aggregation);
-        return userAccuracyDtoFactory.buildUserAccuracyDtoByLevel(result, levelId);
+        return userAccuracyDtoFactory.buildUserAccuracyDtoByLevel(userId, levelId, result);
     }
 
     private Aggregation buildUserAggregation(Long userId) {
