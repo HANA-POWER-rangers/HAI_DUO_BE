@@ -16,5 +16,4 @@ public class Chapter {
 
     @Column(nullable = false, updatable = false)
     private LocalDateTime createdAt = LocalDateTime.now();
-
 }

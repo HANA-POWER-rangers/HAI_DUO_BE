@@ -6,5 +6,4 @@ public record UserAccuracyByChapterDto(
         Integer totalCount,
         Integer correctCount,
         Float accuracyRate
-) {
-}
+) {}

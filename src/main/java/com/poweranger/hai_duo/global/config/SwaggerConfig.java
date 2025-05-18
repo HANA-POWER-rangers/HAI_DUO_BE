@@ -26,7 +26,7 @@ public class SwaggerConfig {
                 .addSecuritySchemes(jwtSchemeName, new SecurityScheme()
                         .name(jwtSchemeName)
                         .type(SecurityScheme.Type.HTTP)
-                        .scheme("Bearer")
+                        .scheme("bearer")
                         .bearerFormat("JWT"));
 
         return new OpenAPI()
@@ -43,5 +43,4 @@ public class SwaggerConfig {
                 .pathsToMatch("/**")
                 .build();
     }
-
 }

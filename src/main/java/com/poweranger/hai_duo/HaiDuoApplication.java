@@ -9,5 +9,4 @@ public class HaiDuoApplication {
     public static void main(String[] args) {
         SpringApplication.run(HaiDuoApplication.class, args);
     }
-
 }

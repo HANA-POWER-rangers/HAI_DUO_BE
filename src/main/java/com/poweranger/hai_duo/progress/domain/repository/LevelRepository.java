@@ -10,5 +10,4 @@ public interface LevelRepository extends JpaRepository<Level, Long> {
 
     @Query("SELECT u.level FROM User u WHERE u.userId = :userId")
     Optional<Level> findLevelByUserId(@Param("userId") Long userId);
-
 }

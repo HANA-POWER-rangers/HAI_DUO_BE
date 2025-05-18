@@ -10,5 +10,4 @@ public interface CharacterRepository extends JpaRepository<GameCharacter, Long> 
 
     @Query("SELECT u.gameCharacter FROM User u WHERE u.userId = :userId")
     Optional<GameCharacter> findGameCharacterByUserId(@Param("userId") Long userId);
-
 }

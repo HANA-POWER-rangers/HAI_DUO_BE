@@ -6,5 +6,4 @@ public record UserAccuracyByLevelDto(
         Integer totalCount,
         Integer correctCount,
         Float accuracyRate
-) {
-}
+) {}

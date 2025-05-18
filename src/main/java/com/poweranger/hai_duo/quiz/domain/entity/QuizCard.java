@@ -19,7 +19,6 @@ public class QuizCard {
     private Stage stage;
 
     private String meaning;
-    private String choices; // json string 형식
+    private String choices;
     private String correctWord;
-
 }

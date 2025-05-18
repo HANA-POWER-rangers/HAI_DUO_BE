@@ -111,5 +111,4 @@ public class QuizDtoFactory {
                 .filter(Objects::nonNull)
                 .toList();
     }
-
 }

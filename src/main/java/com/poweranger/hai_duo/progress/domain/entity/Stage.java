@@ -20,9 +20,8 @@ public class Stage {
     @JoinColumn(name = "chapter_id")
     private Chapter chapter;
 
-    private int stageNumber; // 챕터 안에서 속하는 스테이지 순서 번호
+    private int stageNumber;
 
     @Column(nullable = false, updatable = false)
     private LocalDateTime createdAt = LocalDateTime.now();
-
 }

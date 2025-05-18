@@ -15,5 +15,4 @@ public class Level {
 
     @Column(nullable = false)
     private int requiredExp;
-
 }

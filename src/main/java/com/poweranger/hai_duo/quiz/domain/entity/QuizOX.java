@@ -22,5 +22,4 @@ public class QuizOX {
     private String word;
     private String meaning;
     private boolean isCorrect;
-
 }

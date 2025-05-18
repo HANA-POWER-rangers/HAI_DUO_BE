@@ -38,5 +38,4 @@ public class UserProgressController {
     public ApiResponse<StageResponseDto> getCurrentStage(@PathVariable Long userId) {
         return ApiResponse.onSuccess(userProgressService.getLatestStage(userId));
     }
-
 }

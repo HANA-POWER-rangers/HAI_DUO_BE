@@ -20,5 +20,4 @@ public class QuizBlank {
 
     private String sentenceWithBlank;
     private String correctWord;
-
 }

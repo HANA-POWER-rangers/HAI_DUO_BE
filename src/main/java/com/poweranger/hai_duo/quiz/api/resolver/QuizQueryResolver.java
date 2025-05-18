@@ -45,5 +45,4 @@ public class QuizQueryResolver {
     ) {
         return quizInquiryService.getQuizzesByChapterIdAndType(chapterId, quizType);
     }
-
 }

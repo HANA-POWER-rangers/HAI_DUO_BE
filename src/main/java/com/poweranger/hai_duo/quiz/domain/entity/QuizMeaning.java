@@ -21,5 +21,4 @@ public class QuizMeaning {
     private String word;
     private String meaning;
     private String exampleSentence;
-
 }

@@ -11,7 +11,6 @@ import com.poweranger.hai_duo.progress.api.dto.LevelResponseDto;
 import com.poweranger.hai_duo.progress.api.dto.ProgressResponseDto;
 import com.poweranger.hai_duo.progress.api.dto.StageResponseDto;
 import com.poweranger.hai_duo.progress.api.factory.ProgressDtoFactory;
-import com.poweranger.hai_duo.user.api.dto.UserProgressLogDto;
 import com.poweranger.hai_duo.user.domain.entity.mongodb.UserProgressLog;
 import com.poweranger.hai_duo.user.domain.entity.mysql.User;
 import lombok.RequiredArgsConstructor;
@@ -20,8 +19,6 @@ import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.stereotype.Service;
-
-import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -77,5 +74,4 @@ public class UserProgressService {
         Long stageId = getLatestStageIdFromLog(userId);
         return progressReader.getStage(stageId);
     }
-
 }

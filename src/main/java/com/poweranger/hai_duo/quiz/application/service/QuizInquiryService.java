@@ -48,5 +48,4 @@ public class QuizInquiryService {
         List<Stage> stages = stageRepository.findAllByChapter(chapter);
         return quizDtoFactory.buildQuizDtoListByChapterAndType(stages, quizType);
     }
-
 }
