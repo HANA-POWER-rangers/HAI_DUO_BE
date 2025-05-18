@@ -6,6 +6,8 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import java.util.Optional;
 
 public interface QuizCardRepository extends JpaRepository<QuizCard, Long> {
+
     Optional<QuizCard> findByStage(Stage stage);
+
     Optional<QuizCard> findByStage_StageId(Long stageId);
 }

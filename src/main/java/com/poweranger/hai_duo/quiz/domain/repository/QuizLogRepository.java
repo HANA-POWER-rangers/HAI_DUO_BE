@@ -14,5 +14,4 @@ public class QuizLogRepository {
     public void save(UserProgressLog log) {
         mongoTemplate.save(log);
     }
-
 }
