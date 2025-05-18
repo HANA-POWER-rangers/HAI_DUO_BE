@@ -1,7 +1,6 @@
 package com.poweranger.hai_duo.user.api.dto;
 
 import com.poweranger.hai_duo.quiz.domain.entity.QuizType;
-
 import java.time.LocalDateTime;
 
 public record UserProgressLogDto(

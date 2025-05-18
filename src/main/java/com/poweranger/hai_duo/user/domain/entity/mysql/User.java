@@ -40,5 +40,4 @@ public class User {
     public void addExp(int amount) {
         this.exp += amount;
     }
-
 }

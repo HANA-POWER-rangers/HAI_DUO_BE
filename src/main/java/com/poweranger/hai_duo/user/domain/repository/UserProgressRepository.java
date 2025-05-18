@@ -5,5 +5,6 @@ import org.springframework.data.mongodb.repository.MongoRepository;
 import java.util.List;
 
 public interface UserProgressRepository extends MongoRepository<UserProgressLog, Long> {
+
     List<UserProgressLog> findByUserId(Long userId);
 }

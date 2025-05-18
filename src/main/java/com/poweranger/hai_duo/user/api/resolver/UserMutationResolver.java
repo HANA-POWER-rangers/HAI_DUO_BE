@@ -23,5 +23,4 @@ public class UserMutationResolver {
     public LevelUpResultDto applyExpAndUpgradeStatus(@Argument Long userId, @Argument int amount) {
         return userService.applyExpAndUpgradeStatus(userId, amount);
     }
-
 }

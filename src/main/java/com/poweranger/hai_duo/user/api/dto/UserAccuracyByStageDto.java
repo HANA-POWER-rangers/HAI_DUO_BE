@@ -6,5 +6,4 @@ public record UserAccuracyByStageDto(
         Integer totalCount,
         Integer correctCount,
         Float accuracyRate
-) {
-}
+) {}

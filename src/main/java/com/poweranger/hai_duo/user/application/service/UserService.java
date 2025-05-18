@@ -72,5 +72,4 @@ public class UserService {
     private boolean isLeveledUp(int diff) {
         return diff > 0;
     }
-
 }
