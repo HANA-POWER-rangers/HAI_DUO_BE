@@ -2,7 +2,6 @@ package com.poweranger.hai_duo.user.application.service;
 
 import com.poweranger.hai_duo.global.exception.GeneralException;
 import com.poweranger.hai_duo.global.response.code.ErrorStatus;
-import com.poweranger.hai_duo.progress.domain.repository.LevelRepository;
 import com.poweranger.hai_duo.progress.domain.repository.StageRepository;
 import com.poweranger.hai_duo.user.api.dto.UserAccuracyByChapterDto;
 import com.poweranger.hai_duo.user.api.dto.UserAccuracyByLevelDto;
@@ -24,7 +23,6 @@ public class UserAccuracyService {
     private final MongoTemplate mongoTemplate;
     private final StageRepository stageRepository;
     private final UserAccuracyDtoFactory userAccuracyDtoFactory;
-    private final LevelRepository levelRepository;
 
     public UserAccuracyDto getUserAccuracy(Long userId) {
         Aggregation aggregation = buildUserAggregation(userId);
