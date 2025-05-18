@@ -55,5 +55,4 @@ public class LevelUpProcessor {
     private void setUserLevel(User user, Level level) {
         user.setLevel(level);
     }
-
 }

@@ -26,5 +26,4 @@ public class GameCharacter {
 
     @Column(nullable = false)
     private LocalDateTime updatedAt = LocalDateTime.now();
-
 }
