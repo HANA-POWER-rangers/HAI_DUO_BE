@@ -2,8 +2,10 @@ package com.poweranger.hai_duo.user.application.service;
 
 import com.poweranger.hai_duo.global.exception.GeneralException;
 import com.poweranger.hai_duo.global.response.code.ErrorStatus;
+import com.poweranger.hai_duo.progress.domain.repository.LevelRepository;
 import com.poweranger.hai_duo.progress.domain.repository.StageRepository;
 import com.poweranger.hai_duo.user.api.dto.UserAccuracyByChapterDto;
+import com.poweranger.hai_duo.user.api.dto.UserAccuracyByLevelDto;
 import com.poweranger.hai_duo.user.api.dto.UserAccuracyByStageDto;
 import com.poweranger.hai_duo.user.api.dto.UserAccuracyDto;
 import com.poweranger.hai_duo.user.api.factory.UserAccuracyDtoFactory;
@@ -22,6 +24,7 @@ public class UserAccuracyService {
     private final MongoTemplate mongoTemplate;
     private final StageRepository stageRepository;
     private final UserAccuracyDtoFactory userAccuracyDtoFactory;
+    private final LevelRepository levelRepository;
 
     public UserAccuracyDto getUserAccuracy(Long userId) {
         Aggregation aggregation = buildUserAggregation(userId);
@@ -42,6 +45,12 @@ public class UserAccuracyService {
         Aggregation aggregation = buildChapterAggregation(userId, stageIds);
         Document result = executeAggregation(aggregation);
         return userAccuracyDtoFactory.buildUserAccuracyDtoByChapter(result, chapterId);
+    }
+
+    public UserAccuracyByLevelDto getUserAccuracyByLevel(Long userId, Long levelId) {
+        Aggregation aggregation = buildLevelAggregation(userId, levelId);
+        Document result = executeAggregation(aggregation);
+        return userAccuracyDtoFactory.buildUserAccuracyDtoByLevel(result, levelId);
     }
 
     private Aggregation buildUserAggregation(Long userId) {
@@ -70,6 +79,13 @@ public class UserAccuracyService {
         );
     }
 
+    private Aggregation buildLevelAggregation(Long userId, Long levelId) {
+        return Aggregation.newAggregation(
+                Aggregation.match(Criteria.where("userId").is(userId).and("levelId").is(levelId)),
+                buildGroupOperation("userId")
+        );
+    }
+
     private GroupOperation buildGroupOperation(String field) {
         return Aggregation.group(field)
                 .first("userId").as("userId")
@@ -84,16 +100,8 @@ public class UserAccuracyService {
     }
 
     private Document executeAggregation(Aggregation aggregation) {
-        Document result = mongoTemplate.aggregate(aggregation, "user_progress_logs", Document.class)
+        return mongoTemplate.aggregate(aggregation, "user_progress_logs", Document.class)
                 .getUniqueMappedResult();
-        validateAggregationResult(result);
-        return result;
-    }
-
-    private void validateAggregationResult(Document result) {
-        if (result == null) {
-            throw new GeneralException(ErrorStatus.USER_ACCURACY_NOT_FOUND);
-        }
     }
 
     private void validateStageIds(List<Long> stageIds) {

@@ -3,6 +3,7 @@ package com.poweranger.hai_duo.user.api.factory;
 import com.poweranger.hai_duo.global.exception.GeneralException;
 import com.poweranger.hai_duo.global.response.code.ErrorStatus;
 import com.poweranger.hai_duo.user.api.dto.UserAccuracyByChapterDto;
+import com.poweranger.hai_duo.user.api.dto.UserAccuracyByLevelDto;
 import com.poweranger.hai_duo.user.api.dto.UserAccuracyByStageDto;
 import com.poweranger.hai_duo.user.api.dto.UserAccuracyDto;
 import org.bson.Document;
@@ -34,6 +35,16 @@ public class UserAccuracyDtoFactory {
         return new UserAccuracyByChapterDto(
                 convertToLong(result.get("userId")),
                 chapterId,
+                convertToInt(result.get("totalCount")),
+                convertToInt(result.get("correctCount")),
+                calculateAccuracyRate(result)
+        );
+    }
+
+    public UserAccuracyByLevelDto buildUserAccuracyDtoByLevel(Document result, Long levelId) {
+        return new UserAccuracyByLevelDto(
+                convertToLong(result.get("userId")),
+                levelId,
                 convertToInt(result.get("totalCount")),
                 convertToInt(result.get("correctCount")),
                 calculateAccuracyRate(result)

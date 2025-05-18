@@ -9,6 +9,7 @@ type Query {
   getUserAccuracy(userId: ID!): UserAccuracyDto!
   getUserAccuracyByStage(userId: ID!, stageId: ID!): UserAccuracyByStageDto!
   getUserAccuracyByChapter(userId: ID!, chapterId: ID!): UserAccuracyByChapterDto!
+  getUserAccuracyByLevel(userId: ID!, levelId: ID!): UserAccuracyByLevelDto!
 }
 
 type UserDto {
@@ -66,6 +67,14 @@ type UserAccuracyByStageDto {
 type UserAccuracyByChapterDto {
   userId: ID
   chapterId: ID
+  totalCount: Int
+  correctCount: Int
+  accuracyRate: Float
+}
+
+type UserAccuracyByLevelDto {
+  userId: ID
+  levelId: ID
   totalCount: Int
   correctCount: Int
   accuracyRate: Float

@@ -1,10 +1,7 @@
 package com.poweranger.hai_duo.user.api.resolver;
 
 import com.poweranger.hai_duo.global.response.ApiResponse;
-import com.poweranger.hai_duo.user.api.dto.UserAccuracyByChapterDto;
-import com.poweranger.hai_duo.user.api.dto.UserAccuracyByStageDto;
-import com.poweranger.hai_duo.user.api.dto.UserAccuracyDto;
-import com.poweranger.hai_duo.user.api.dto.UserDto;
+import com.poweranger.hai_duo.user.api.dto.*;
 import com.poweranger.hai_duo.user.application.service.UserAccuracyService;
 import com.poweranger.hai_duo.user.application.service.UserService;
 import com.poweranger.hai_duo.user.domain.entity.mongodb.UserProgressLog;
@@ -47,6 +44,11 @@ public class UserQueryResolver {
     @QueryMapping
     public UserAccuracyByChapterDto getUserAccuracyByChapter(@Argument Long userId, @Argument Long chapterId) {
         return userAccuracyService.getUserAccuracyByChapter(userId, chapterId);
+    }
+
+    @QueryMapping
+    public UserAccuracyByLevelDto getUserAccuracyByLevel(@Argument Long userId, @Argument Long levelId) {
+        return userAccuracyService.getUserAccuracyByLevel(userId, levelId);
     }
 
 }
