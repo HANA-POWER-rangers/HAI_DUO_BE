@@ -6,6 +6,10 @@ type Mutation {
 type Query {
   getUserById(userId: ID!): UserDto
   getUserQuizLogs(userId: ID!): [UserProgressLog!]!
+  getUserAccuracy(userId: ID!): UserAccuracyDto!
+  getUserAccuracyByStage(userId: ID!, stageId: ID!): UserAccuracyByStageDto!
+  getUserAccuracyByChapter(userId: ID!, chapterId: ID!): UserAccuracyByChapterDto!
+  getUserAccuracyByLevel(userId: ID!, levelId: ID!): UserAccuracyByLevelDto!
 }
 
 type UserDto {
@@ -43,3 +47,36 @@ type UserProgressLog {
   responseTime: Float!
   answeredAt: String!
 }
+
+
+type UserAccuracyDto {
+  userId: ID
+  totalCount: Int
+  correctCount: Int
+  accuracyRate: Float
+}
+
+type UserAccuracyByStageDto {
+  userId: ID
+  stageId: ID
+  totalCount: Int
+  correctCount: Int
+  accuracyRate: Float
+}
+
+type UserAccuracyByChapterDto {
+  userId: ID
+  chapterId: ID
+  totalCount: Int
+  correctCount: Int
+  accuracyRate: Float
+}
+
+type UserAccuracyByLevelDto {
+  userId: ID
+  levelId: ID
+  totalCount: Int
+  correctCount: Int
+  accuracyRate: Float
+}
+

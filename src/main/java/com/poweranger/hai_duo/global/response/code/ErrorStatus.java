@@ -32,7 +32,10 @@ public enum ErrorStatus implements BaseCode {
     QUIZ_MEAN_NOT_FOUND(HttpStatus.NOT_FOUND, "QUIZ4003", "MEANING 퀴즈 타입이 존재하지 않습니다."),
     QUIZ_OX_NOT_FOUND(HttpStatus.NOT_FOUND, "QUIZ4004", "OX 퀴즈 타입이 존재하지 않습니다."),
     QUIZ_CARD_NOT_FOUND(HttpStatus.NOT_FOUND, "QUIZ4005", "CARD 퀴즈 타입이 존재하지 않습니다."),
-    QUIZ_BLANK_NOT_FOUND(HttpStatus.NOT_FOUND, "QUIZ4006", "BLANK 퀴즈 타입이 존재하지 않습니다.");
+    QUIZ_BLANK_NOT_FOUND(HttpStatus.NOT_FOUND, "QUIZ4006", "BLANK 퀴즈 타입이 존재하지 않습니다."),
+
+    // 사용자 정답률 관련
+    USER_ACCURACY_NOT_FOUND(HttpStatus.NOT_FOUND, "USER4003", "사용자의 누적 정답률 정보를 찾을 수 없습니다.");
 
 
     private final HttpStatus httpStatus;

@@ -21,4 +21,5 @@ public class UserFactory {
                 .lastAccessedAt(LocalDateTime.now())
                 .build();
     }
+
 }

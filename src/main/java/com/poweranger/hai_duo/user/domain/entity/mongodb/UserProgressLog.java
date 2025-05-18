@@ -17,6 +17,7 @@ public class UserProgressLog {
     private ObjectId id;
 
     private Long userId;
+    private Long levelId;
     private Long stageId;
 
     private QuizType quizType;
@@ -30,6 +31,7 @@ public class UserProgressLog {
 
     public UserProgressLog(
             Long userId,
+            Long levelId,
             Long stageId,
             QuizType quizType,
             boolean isCorrect,
@@ -39,6 +41,7 @@ public class UserProgressLog {
             LocalDateTime answeredAt
     ) {
         this.userId = userId;
+        this.levelId = levelId;
         this.stageId = stageId;
         this.quizType = quizType;
         this.isCorrect = isCorrect;

@@ -4,7 +4,7 @@ import com.poweranger.hai_duo.progress.domain.entity.Chapter;
 import com.poweranger.hai_duo.progress.domain.entity.Level;
 import com.poweranger.hai_duo.progress.domain.entity.Stage;
 import com.poweranger.hai_duo.progress.domain.repository.LevelRepository;
-import com.poweranger.hai_duo.quiz.domain.repository.StageRepository;
+import com.poweranger.hai_duo.progress.domain.repository.StageRepository;
 import com.poweranger.hai_duo.user.domain.entity.mysql.User;
 import com.poweranger.hai_duo.user.domain.repository.UserRepository;
 import com.poweranger.hai_duo.global.exception.GeneralException;
