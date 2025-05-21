@@ -37,6 +37,11 @@ spring:
       max-file-size: 20MB
       max-request-size: 20MB
 
+  web:
+    resources:
+      add-mappings: true
+      static-locations: classpath:/META-INF/resources/, classpath:/resources/, classpath:/static/
+
 graphql:
   path: /graphql
   graphiql:
@@ -52,4 +57,3 @@ springdoc:
     groups-order: DESC
     tags-sorter: alpha
     operations-sorter: method
-
