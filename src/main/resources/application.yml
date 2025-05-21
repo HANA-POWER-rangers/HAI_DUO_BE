@@ -5,6 +5,9 @@ spring:
   application:
     name: hai-duo
 
+  profiles:
+    active: prod
+
   datasource:
     url: ${DB_JDBC_URI}
     username: ${DB_USER}
@@ -42,22 +45,6 @@ graphql:
     endpoint: /graphql
   schema:
     locations: classpath:graphql/
-
-#jwt:
-#  secret: your_jwt_secret_key_here
-#  expiration: 3600000 # 1 hour (ms)
-
-#cloud:
-#  aws:
-#    s3:
-#      bucket: your-s3-bucket-name
-#    credentials:
-#      access-key: YOUR_ACCESS_KEY
-#      secret-key: YOUR_SECRET_KEY
-#    region:
-#      static: ap-northeast-2
-#    stack:
-#      auto: false
 
 springdoc:
   swagger-ui:
