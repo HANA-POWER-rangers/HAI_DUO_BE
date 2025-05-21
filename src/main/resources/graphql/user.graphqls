@@ -1,0 +1,82 @@
+type Mutation {
+  createTempUser: UserDto
+  applyExpAndUpgradeStatus(userId: ID!, amount: Int!): LevelUpResultDto
+}
+
+type Query {
+  getUserById(userId: ID!): UserDto
+  getUserQuizLogs(userId: ID!): [UserProgressLog!]!
+  getUserAccuracy(userId: ID!): UserAccuracyDto!
+  getUserAccuracyByStage(userId: ID!, stageId: ID!): UserAccuracyByStageDto!
+  getUserAccuracyByChapter(userId: ID!, chapterId: ID!): UserAccuracyByChapterDto!
+  getUserAccuracyByLevel(userId: ID!, levelId: ID!): UserAccuracyByLevelDto!
+}
+
+type UserDto {
+  userId: ID!
+  tempUserToken: String!
+  exp: Int!
+  levelId: ID!
+  characterId: ID!
+  goldAmount: Int!
+  createdAt: String!
+  lastAccessedAt: String!
+}
+
+type LevelUpResultDto {
+  userId: ID!
+  exp: Int!
+  levelId: ID!
+  leveledUp: Boolean!
+  upgradedCharacter: CharacterDto!
+}
+
+type CharacterDto {
+  characterId: ID!
+  characterName: String!
+}
+
+type UserProgressLog {
+  id: ID!
+  userId: ID!
+  stageId: ID!
+  quizType: QuizType!
+  isCorrect: Boolean!
+  selectedOption: String!
+  answer: String!
+  responseTime: Float!
+  answeredAt: String!
+}
+
+
+type UserAccuracyDto {
+  userId: ID
+  totalCount: Int
+  correctCount: Int
+  accuracyRate: Float
+}
+
+type UserAccuracyByStageDto {
+  userId: ID
+  stageId: ID
+  totalCount: Int
+  correctCount: Int
+  accuracyRate: Float
+}
+
+type UserAccuracyByChapterDto {
+  userId: ID
+  chapterId: ID
+  totalCount: Int
+  correctCount: Int
+  accuracyRate: Float
+}
+
+type UserAccuracyByLevelDto {
+  userId: ID
+  levelId: ID
+  totalCount: Int
+  correctCount: Int
+  accuracyRate: Float
+}
+
