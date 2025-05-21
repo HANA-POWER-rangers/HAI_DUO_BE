@@ -2,8 +2,8 @@ version: '3.8'
 
 services:
   app:
-    container_name: haiDuo-app
-    image: haiDuo-backend:latest
+    container_name: hai-duo-app
+    image: hai-duo-backend:latest
     build:
       context: .
       dockerfile: Dockerfile
@@ -15,10 +15,10 @@ services:
     depends_on:
       - db
     networks:
-      - haiDuo-network
+      - hai-duo-network
 
   db:
-    container_name: haiDuo-mysql
+    container_name: hai-duo-mysql
     image: mysql:8.0
     restart: always
     env_file:
@@ -33,10 +33,10 @@ services:
     volumes:
       - mysql_data:/var/lib/mysql
     networks:
-      - haiDuo-network
+      - hai-duo-network
 
 networks:
-  haiDuo-network:
+  hai-duo-network:
     driver: bridge
 
 volumes:
