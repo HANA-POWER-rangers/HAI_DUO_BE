@@ -11,8 +11,10 @@ services:
     ports:
       - "8080:8080"
     depends_on:
-      - db_mysql
-      - db_mongo
+      db_mysql:
+        condition: service_healthy
+      db_mongo:
+        condition: service_started
     networks:
       - hai-duo-network
 
@@ -31,6 +33,11 @@ services:
       - mysql_data:/var/lib/mysql
     networks:
       - hai-duo-network
+    healthcheck:
+      test: [ "CMD", "mysqladmin", "ping", "-h", "localhost" ]
+      interval: 10s
+      timeout: 5s
+      retries: 5
 
   db_mongo:
     container_name: hai-duo-mongo
