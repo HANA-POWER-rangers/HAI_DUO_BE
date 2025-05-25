@@ -14,6 +14,7 @@ services:
       - "8080:8080"
     depends_on:
       - db
+      - mongo
     networks:
       - hai-duo-network
 
@@ -32,6 +33,15 @@ services:
       - "3306:3306"
     volumes:
       - mysql_data:/var/lib/mysql
+    networks:
+      - hai-duo-network
+
+  mongo:
+    container_name: hai-duo-mongo
+    image: mongo:6.0
+    restart: always
+    ports:
+      - "27017:27017"
     networks:
       - hai-duo-network
 
