@@ -4,8 +4,6 @@ on:
   push:
     branches:
       - main
-      - release/**
-      - fix/**
 
 jobs:
   build-and-deploy:
@@ -43,27 +41,22 @@ jobs:
           push: true
           tags: ${{ secrets.DOCKER_USERNAME }}/hai-duo-backend:latest
 
-      - name: SSH deploy to EC2
+      - name: Upload .env to EC2 and Deploy
         uses: appleboy/ssh-action@v0.1.10
         with:
           host: ${{ secrets.EC2_HOST }}
           username: ${{ secrets.EC2_USER }}
           key: ${{ secrets.EC2_SSH_KEY }}
           script: |
-            echo "1. pull image"
-            sudo docker pull ${{ secrets.DOCKER_USERNAME }}/hai-duo-backend:latest
+            echo "${{ secrets.ENV_FILE_CONTENT }}" > ~/hai-duo.env
 
-            echo "2. stop container"
-            sudo docker stop hai-duo-app || true
+            docker pull ${{ secrets.DOCKER_USERNAME }}/hai-duo-backend:latest
 
-            echo "3. remove container"
-            sudo docker rm hai-duo-app || true
+            docker stop hai-duo-app || true
+            docker rm hai-duo-app || true
 
-            echo "4. run container"
-            sudo docker run -d \
+            docker run -d \
               --name hai-duo-app \
+              --env-file ~/hai-duo.env \
               -p 8080:8080 \
               ${{ secrets.DOCKER_USERNAME }}/hai-duo-backend:latest
-
-            echo "5. show running containers"
-            sudo docker ps
