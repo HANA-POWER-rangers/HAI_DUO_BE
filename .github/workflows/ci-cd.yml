@@ -50,10 +50,20 @@ jobs:
           username: ${{ secrets.EC2_USER }}
           key: ${{ secrets.EC2_SSH_KEY }}
           script: |
-            docker pull ${{ secrets.DOCKER_USERNAME }}/hai-duo-backend:latest
-            docker stop hai-duo-app || true
-            docker rm hai-duo-app || true
-            docker run -d \
+            echo "1. pull image"
+            sudo docker pull ${{ secrets.DOCKER_USERNAME }}/hai-duo-backend:latest
+
+            echo "2. stop container"
+            sudo docker stop hai-duo-app || true
+
+            echo "3. remove container"
+            sudo docker rm hai-duo-app || true
+
+            echo "4. run container"
+            sudo docker run -d \
               --name hai-duo-app \
               -p 8080:8080 \
               ${{ secrets.DOCKER_USERNAME }}/hai-duo-backend:latest
+
+            echo "5. show running containers"
+            sudo docker ps
