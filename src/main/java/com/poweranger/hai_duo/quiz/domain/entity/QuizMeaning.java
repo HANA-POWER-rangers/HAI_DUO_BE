@@ -11,10 +11,10 @@ import lombok.NoArgsConstructor;
 public class QuizMeaning {
 
     @Id
-    private Long stageId;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long quizMeaningId;
 
-    @OneToOne
-    @MapsId
+    @ManyToOne
     @JoinColumn(name = "stage_id")
     private Stage stage;
 

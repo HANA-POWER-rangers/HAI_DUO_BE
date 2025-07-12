@@ -30,7 +30,7 @@ public class SwaggerConfig {
                         .bearerFormat("JWT"));
 
         return new OpenAPI()
-                .addServersItem(new Server().url("https://localhost:8080"))
+                .addServersItem(new Server().url("https://hai-duo-be.store"))
                 .info(info)
                 .addSecurityItem(securityRequirement)
                 .components(components);

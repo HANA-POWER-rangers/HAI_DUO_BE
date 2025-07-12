@@ -1,9 +1,7 @@
-version: '3.8'
-
 services:
   app:
     container_name: hai-duo-app
-    image: hai-duo-backend:latest
+    image: seunpark/hai-duo-backend:latest
     build:
       context: .
       dockerfile: Dockerfile
@@ -13,16 +11,17 @@ services:
     ports:
       - "8080:8080"
     depends_on:
-      - db
+      db_mysql:
+        condition: service_healthy
+      db_mongo:
+        condition: service_started
     networks:
       - hai-duo-network
 
-  db:
+  db_mysql:
     container_name: hai-duo-mysql
     image: mysql:8.0
     restart: always
-    env_file:
-      - .env
     environment:
       MYSQL_ROOT_PASSWORD: ${DB_PASSWORD}
       MYSQL_DATABASE: ${DB_NAME}
@@ -34,6 +33,22 @@ services:
       - mysql_data:/var/lib/mysql
     networks:
       - hai-duo-network
+    healthcheck:
+      test: ["CMD-SHELL", "mysqladmin ping -h localhost -u${DB_USER} -p${DB_PASSWORD} --silent"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+
+  db_mongo:
+    container_name: hai-duo-mongo
+    image: mongo:6.0
+    restart: always
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongo_data:/data/db
+    networks:
+      - hai-duo-network
 
 networks:
   hai-duo-network:
@@ -41,4 +56,4 @@ networks:
 
 volumes:
   mysql_data:
-    driver: local
+  mongo_data:
