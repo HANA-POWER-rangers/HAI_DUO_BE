@@ -14,7 +14,7 @@ public class QuizCard {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long quizCardId;
 
-    @OneToOne
+    @ManyToOne
     @JoinColumn(name = "stage_id")
     private Stage stage;
 

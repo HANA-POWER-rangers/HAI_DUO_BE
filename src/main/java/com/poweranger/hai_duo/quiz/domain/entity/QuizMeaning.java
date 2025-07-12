@@ -14,7 +14,7 @@ public class QuizMeaning {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long quizMeaningId;
 
-    @OneToOne
+    @ManyToOne
     @JoinColumn(name = "stage_id")
     private Stage stage;
 

@@ -14,7 +14,7 @@ public class QuizBlank {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long quizBlankId;
 
-    @OneToOne
+    @ManyToOne
     @JoinColumn(name = "stage_id")
     private Stage stage;
 
