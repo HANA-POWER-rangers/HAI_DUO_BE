@@ -10,10 +10,8 @@ public class GraphqlExceptionHandler extends DataFetcherExceptionResolverAdapter
 
     @Override
     protected GraphQLError resolveToSingleError(Throwable ex, DataFetchingEnvironment env) {
-        if (ex instanceof GraphQLException graphqlException) {
-            return new GraphQLException(graphqlException.getMessage(),
-                    graphqlException.getHttpStatus(),
-                    graphqlException.getErrorType());
+        if (ex instanceof CustomGraphQLException graphqlException) {
+            return graphqlException;
         }
 
         return null;

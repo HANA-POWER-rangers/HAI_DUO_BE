@@ -1,5 +1,6 @@
 package com.poweranger.hai_duo.user.application.service;
 
+import com.poweranger.hai_duo.global.exception.CustomGraphQLException;
 import com.poweranger.hai_duo.global.exception.GeneralException;
 import com.poweranger.hai_duo.global.response.code.ErrorStatus;
 import com.poweranger.hai_duo.progress.api.dto.LevelUpResultDto;
@@ -14,6 +15,7 @@ import com.poweranger.hai_duo.user.domain.entity.mysql.User;
 import com.poweranger.hai_duo.progress.domain.repository.CharacterRepository;
 import com.poweranger.hai_duo.progress.domain.repository.LevelRepository;
 import com.poweranger.hai_duo.user.domain.repository.UserRepository;
+import graphql.ErrorType;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -43,7 +45,11 @@ public class UserService {
     public UserDto getUserDtoById(Long id) {
         return userRepository.findByIdWithLevelAndCharacter(id)
                 .map(UserDto::from)
-                .orElseThrow(() -> new GeneralException(ErrorStatus.USER_NOT_FOUND));
+                .orElseThrow(() ->  new CustomGraphQLException(
+                ErrorStatus.USER_NOT_FOUND,
+                ErrorType.DataFetchingException,
+                "UserService.getUserDtoById(): 사용자 ID " + id + "는 존재하지 않음"
+        ));
     }
 
     public LevelUpResultDto applyExpAndUpgradeStatus(Long userId, int amount) {
