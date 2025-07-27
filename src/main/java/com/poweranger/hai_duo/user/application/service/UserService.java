@@ -41,7 +41,7 @@ public class UserService {
     }
 
     public UserDto getUserDtoById(Long id) {
-        return userRepository.findById(id)
+        return userRepository.findByIdWithLevelAndCharacter(id)
                 .map(UserDto::from)
                 .orElseThrow(() -> new GeneralException(ErrorStatus.USER_NOT_FOUND));
     }
