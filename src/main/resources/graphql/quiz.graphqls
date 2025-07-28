@@ -1,6 +1,6 @@
 extend type Query {
-    quizzesByStageKey(chapterId: ID!, stageNumber: Int!): QuizByStageNumberDto
-    quizByStageKeyAndType(chapterId: ID!, stageNumber: Int!, quizType: QuizType!): QuizUnionDto
+    quizzesByStageKey(chapterId: ID!, stageNumber: Int!): [QuizByStageNumberDto!]!
+    quizByStageKeyAndType(chapterId: ID!, stageNumber: Int!, quizType: QuizType!): [QuizUnionDto!]!
     allQuizzesInChapter(chapterId: ID!): QuizByChapterIdDto
     quizzesInChapterByType(chapterId: ID!, quizType: QuizType!): [QuizUnionDto!]!
 }
@@ -14,10 +14,10 @@ type QuizByStageNumberDto {
     stageId: ID!
     stageName: String!
     stageNumber: Int!
-    quizMeaning: QuizMeaningDto!
-    quizCard: QuizCardDto!
-    quizOX: QuizOXDto!
-    quizBlank: QuizBlankDto!
+    quizMeaning: [QuizMeaningDto!]!
+    quizCard: [QuizCardDto!]!
+    quizOX: [QuizOXDto!]!
+    quizBlank: [QuizBlankDto!]!
 }
 
 type QuizMeaningDto {
