@@ -4,4 +4,4 @@ public record QuizOXDto(
         String word,
         String meaning,
         boolean isCorrect
-) {}
+) implements QuizUnionDto {}

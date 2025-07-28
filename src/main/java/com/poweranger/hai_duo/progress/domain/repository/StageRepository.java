@@ -16,5 +16,5 @@ public interface StageRepository extends JpaRepository<Stage, Long> {
     List<Long> findStageIdsByChapterId(@Param("chapterId") Long chapterId);
 
     List<Stage> findAllByChapter(Chapter chapter);
-    Optional<Stage> findByStageNameAndChapter_ChapterId(String stageName, Long chapterId);
+    Optional<Stage> findByChapter_ChapterIdAndStageNumber(Long chapterId, Integer stageNumber);
 }

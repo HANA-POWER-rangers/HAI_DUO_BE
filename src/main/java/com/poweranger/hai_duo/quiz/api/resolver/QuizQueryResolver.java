@@ -1,8 +1,6 @@
 package com.poweranger.hai_duo.quiz.api.resolver;
 
-import com.poweranger.hai_duo.quiz.api.dto.QuizByChapterIdDto;
-import com.poweranger.hai_duo.quiz.api.dto.QuizByStageIdDto;
-import com.poweranger.hai_duo.quiz.api.factory.QuizDtoFactory;
+import com.poweranger.hai_duo.quiz.api.dto.*;
 import com.poweranger.hai_duo.quiz.application.service.QuizInquiryService;
 import com.poweranger.hai_duo.quiz.domain.entity.QuizType;
 import lombok.RequiredArgsConstructor;
@@ -16,33 +14,31 @@ import java.util.List;
 public class QuizQueryResolver {
 
     private final QuizInquiryService quizInquiryService;
-    private final QuizDtoFactory quizDtoFactory;
 
     @QueryMapping
-    public QuizByStageIdDto getQuizzesByStageId(@Argument Long stageId) {
-        return quizInquiryService.getQuizzesByStageId(stageId);
-    }
-
-    @QueryMapping
-    public Object getQuizByStageIdAndType(@Argument Long stageId, @Argument QuizType quizType) {
-        return switch (quizType) {
-            case MEAN -> quizDtoFactory.getMeaningQuizByStageId(stageId);
-            case CARD -> quizDtoFactory.getCardQuizByStageId(stageId);
-            case OX -> quizDtoFactory.getOXQuizByStageId(stageId);
-            case BLANK -> quizDtoFactory.getBlankQuizByStageId(stageId);
-        };
-    }
-
-    @QueryMapping
-    public QuizByChapterIdDto getQuizzesByChapterId(@Argument Long chapterId){
-        return quizInquiryService.getQuizzesByChapterId(chapterId);
-    }
-
-    @QueryMapping
-    public List<Object> getQuizzesByChapterIdAndType(
+    public List<QuizByStageNumberDto> quizzesByStageKey(
             @Argument Long chapterId,
-            @Argument QuizType quizType
-    ) {
-        return quizInquiryService.getQuizzesByChapterIdAndType(chapterId, quizType);
+            @Argument Integer stageNumber) {
+        return quizInquiryService.quizzesByStageKey(chapterId, stageNumber);
+    }
+
+    @QueryMapping
+    public List<QuizUnionDto> quizByStageKeyAndType(
+            @Argument Long chapterId,
+            @Argument Integer stageNumber,
+            @Argument QuizType quizType) {
+        return quizInquiryService.quizByStageKeyAndType(chapterId, stageNumber, quizType);
+    }
+
+    @QueryMapping
+    public QuizByChapterIdDto allQuizzesInChapter(@Argument Long chapterId) {
+        return quizInquiryService.allQuizzesInChapter(chapterId);
+    }
+
+    @QueryMapping
+    public List<QuizTypeGroupedByStageDto> quizzesInChapterByType(
+            @Argument Long chapterId,
+            @Argument QuizType quizType) {
+        return quizInquiryService.quizzesInChapterByType(chapterId, quizType);
     }
 }

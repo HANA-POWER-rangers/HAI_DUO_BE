@@ -1,22 +1,27 @@
 extend type Query {
-    getQuizzesByStageId(chapterId: ID!, stageId: ID!): QuizByStageIdDto
-    getQuizByStageIdAndType(stageId: ID!, quizType: QuizType!): QuizUnionDto
-    getQuizzesByChapterId(chapterId: ID!): QuizByChapterIdDto
-    getQuizzesByChapterIdAndType(chapterId: ID!, quizType: QuizType!): [QuizUnionDto!]!
+    quizzesByStageKey(chapterId: ID!, stageNumber: Int!): [QuizByStageNumberDto!]!
+    quizByStageKeyAndType(chapterId: ID!, stageNumber: Int!, quizType: QuizType!): [QuizUnionDto!]!
+    allQuizzesInChapter(chapterId: ID!): QuizByChapterIdDto
+    quizzesInChapterByType(chapterId: ID!, quizType: QuizType!): [QuizTypeGroupedByStageDto!]!
 }
 
 type QuizByChapterIdDto {
     chapterId: ID!
-    quizzes: [QuizByStageIdDto!]!
+    quizzes: [QuizByStageNumberDto!]!
 }
 
-type QuizByStageIdDto {
+type QuizByStageNumberDto {
     stageId: ID!
     stageName: String!
-    quizMeaning: QuizMeaningDto
-    quizCard: QuizCardDto
-    quizOX: QuizOXDto
-    quizBlank: QuizBlankDto
+    stageNumber: Int!
+    quizzes: [QuizSetDto!]!
+}
+
+type QuizSetDto {
+    quizMeaning: QuizMeaningDto!
+    quizCard: QuizCardDto!
+    quizOX: QuizOXDto!
+    quizBlank: QuizBlankDto!
 }
 
 type QuizMeaningDto {
@@ -43,3 +48,10 @@ type QuizBlankDto {
 }
 
 union QuizUnionDto = QuizMeaningDto | QuizCardDto | QuizOXDto | QuizBlankDto
+
+type QuizTypeGroupedByStageDto {
+    stageId: ID!
+    stageName: String!
+    stageNumber: Int!
+    quizzes: [QuizUnionDto!]!
+}

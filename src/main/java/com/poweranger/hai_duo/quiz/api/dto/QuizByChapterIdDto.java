@@ -6,5 +6,5 @@ import java.util.List;
 @Builder
 public record QuizByChapterIdDto(
         Long chapterId,
-        List<QuizByStageIdDto> quizzes
+        List<QuizByStageNumberDto> quizzes
 ) {}

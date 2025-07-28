@@ -4,4 +4,4 @@ public record QuizCardDto(
         String meaning,
         String choices,
         String correctWord
-) {}
+) implements QuizUnionDto {}
