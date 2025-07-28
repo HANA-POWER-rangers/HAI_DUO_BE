@@ -46,6 +46,7 @@ public class QuizDtoFactory {
         return QuizByStageIdDto.builder()
                 .stageId(stage.getStageId())
                 .stageName(stage.getStageName())
+                .stageNumber(stage.getStageNumber())
                 .quizMeaning(meaning)
                 .quizCard(card)
                 .quizOX(ox)

@@ -6,6 +6,7 @@ import lombok.Builder;
 public record QuizByStageIdDto(
         Long stageId,
         String stageName,
+        int stageNumber,
         QuizMeaningDto quizMeaning,
         QuizCardDto quizCard,
         QuizOXDto quizOX,
