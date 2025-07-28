@@ -1,8 +1,6 @@
 package com.poweranger.hai_duo.quiz.api.resolver;
 
-import com.poweranger.hai_duo.quiz.api.dto.QuizByChapterIdDto;
-import com.poweranger.hai_duo.quiz.api.dto.QuizByStageNumberDto;
-import com.poweranger.hai_duo.quiz.api.dto.QuizUnionDto;
+import com.poweranger.hai_duo.quiz.api.dto.*;
 import com.poweranger.hai_duo.quiz.application.service.QuizInquiryService;
 import com.poweranger.hai_duo.quiz.domain.entity.QuizType;
 import lombok.RequiredArgsConstructor;
@@ -19,19 +17,17 @@ public class QuizQueryResolver {
     private final QuizInquiryService quizInquiryService;
 
     @QueryMapping
-    public QuizByStageNumberDto quizzesByStageKey(
+    public List<QuizByStageNumberDto> quizzesByStageKey(
             @Argument Long chapterId,
-            @Argument Integer stageNumber
-    ) {
+            @Argument Integer stageNumber) {
         return quizInquiryService.quizzesByStageKey(chapterId, stageNumber);
     }
 
     @QueryMapping
-    public QuizUnionDto quizByStageKeyAndType(
+    public List<QuizUnionDto> quizByStageKeyAndType(
             @Argument Long chapterId,
             @Argument Integer stageNumber,
-            @Argument QuizType quizType
-    ) {
+            @Argument QuizType quizType) {
         return quizInquiryService.quizByStageKeyAndType(chapterId, stageNumber, quizType);
     }
 
@@ -43,8 +39,7 @@ public class QuizQueryResolver {
     @QueryMapping
     public List<QuizUnionDto> quizzesInChapterByType(
             @Argument Long chapterId,
-            @Argument QuizType quizType
-    ) {
+            @Argument QuizType quizType) {
         return quizInquiryService.quizzesInChapterByType(chapterId, quizType);
     }
 }
