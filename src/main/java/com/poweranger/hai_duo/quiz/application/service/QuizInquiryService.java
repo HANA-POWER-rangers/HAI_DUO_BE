@@ -21,21 +21,33 @@ public class QuizInquiryService {
     private final ChapterRepository chapterRepository;
     private final QuizDtoFactory quizDtoFactory;
 
-    public QuizByStageIdDto getQuizzesByStageId(Long stageId) {
-        Stage stage = getStageByStageId(stageId);
+    public QuizByStageNumberDto quizzesByStageKey(Long chapterId, int stageNumber) {
+        Stage stage = getStageByChapterAndNumber(chapterId, stageNumber);
         return quizDtoFactory.buildQuizDtoByStage(stage);
     }
 
-    public QuizByChapterIdDto getQuizzesByChapterId(Long chapterId) {
+    public QuizUnionDto quizByStageKeyAndType(Long chapterId, int stageNumber, QuizType quizType) {
+        Stage stage = getStageByChapterAndNumber(chapterId, stageNumber);
+
+        return switch (quizType) {
+            case MEAN -> quizDtoFactory.getMeaningQuizByStage(stage);
+            case CARD -> quizDtoFactory.getCardQuizByStage(stage);
+            case OX -> quizDtoFactory.getOXQuizByStage(stage);
+            case BLANK -> quizDtoFactory.getBlankQuizByStage(stage);
+        };
+    }
+
+    public QuizByChapterIdDto allQuizzesInChapter(Long chapterId) {
         Chapter chapter = getChapterByChapterId(chapterId);
         List<Stage> stages = stageRepository.findAllByChapter(chapter);
-        List<QuizByStageIdDto> quizzes = quizDtoFactory.buildQuizDtoByStageList(stages);
+        List<QuizByStageNumberDto> quizzes = quizDtoFactory.buildQuizDtoByStageList(stages);
         return quizDtoFactory.toQuizByChapterDto(chapter, quizzes);
     }
 
-    private Stage getStageByStageId(Long stageId) {
-        return stageRepository.findById(stageId)
-                .orElseThrow(() -> new GeneralException(ErrorStatus.STAGE_NOT_FOUND));
+    public List<QuizUnionDto> quizzesInChapterByType(Long chapterId, QuizType quizType) {
+        Chapter chapter = getChapterByChapterId(chapterId);
+        List<Stage> stages = stageRepository.findAllByChapter(chapter);
+        return quizDtoFactory.buildQuizDtoListByChapterAndType(stages, quizType);
     }
 
     private Chapter getChapterByChapterId(Long chapterId) {
@@ -43,9 +55,8 @@ public class QuizInquiryService {
                 .orElseThrow(() -> new GeneralException(ErrorStatus.CHAPTER_NOT_FOUND));
     }
 
-    public List<Object> getQuizzesByChapterIdAndType(Long chapterId, QuizType quizType) {
-        Chapter chapter = getChapterByChapterId(chapterId);
-        List<Stage> stages = stageRepository.findAllByChapter(chapter);
-        return quizDtoFactory.buildQuizDtoListByChapterAndType(stages, quizType);
+    private Stage getStageByChapterAndNumber(Long chapterId, int stageNumber) {
+        return stageRepository.findByChapter_ChapterIdAndStageNumber(chapterId, stageNumber)
+                .orElseThrow(() -> new GeneralException(ErrorStatus.STAGE_NOT_FOUND));
     }
 }

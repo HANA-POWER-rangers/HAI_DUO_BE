@@ -38,12 +38,14 @@ public class QuizDtoFactory {
         return entityOpt.map(mapper).orElse(null);
     }
 
-    public QuizByStageIdDto toQuizByStageDto(Stage stage,
-                                 QuizMeaningDto meaning,
-                                 QuizCardDto card,
-                                 QuizOXDto ox,
-                                 QuizBlankDto blank) {
-        return QuizByStageIdDto.builder()
+    public QuizByStageNumberDto toQuizByStageNumberDto(
+            Stage stage,
+            QuizMeaningDto meaning,
+            QuizCardDto card,
+            QuizOXDto ox,
+            QuizBlankDto blank
+    ) {
+        return QuizByStageNumberDto.builder()
                 .stageId(stage.getStageId())
                 .stageName(stage.getStageName())
                 .stageNumber(stage.getStageNumber())
@@ -54,30 +56,17 @@ public class QuizDtoFactory {
                 .build();
     }
 
-    public QuizMeaningDto getMeaningQuizByStageId(Long stageId) {
-        return getQuizDto(stageId, quizReader::getMeaningQuizByStageId, this::toDto);
+    public QuizUnionDto getQuizByStageIdAndType(Long stageId, QuizType type) {
+        return switch (type) {
+            case MEAN -> mapToDto(quizReader.getMeaningQuizByStageId(stageId), this::toDto);
+            case CARD -> mapToDto(quizReader.getCardQuizByStageId(stageId), this::toDto);
+            case OX -> mapToDto(quizReader.getOXQuizByStageId(stageId), this::toDto);
+            case BLANK -> mapToDto(quizReader.getBlankQuizByStageId(stageId), this::toDto);
+        };
     }
 
-    public QuizCardDto getCardQuizByStageId(Long stageId) {
-        return getQuizDto(stageId, quizReader::getCardQuizByStageId, this::toDto);
-    }
-
-    public QuizOXDto getOXQuizByStageId(Long stageId) {
-        return getQuizDto(stageId, quizReader::getOXQuizByStageId, this::toDto);
-    }
-
-    public QuizBlankDto getBlankQuizByStageId(Long stageId) {
-        return getQuizDto(stageId, quizReader::getBlankQuizByStageId, this::toDto);
-    }
-
-    private <T, R> R getQuizDto(Long stageId, Function<Long, Optional<T>> reader, Function<T, R> mapper) {
-        return reader.apply(stageId)
-                .map(mapper)
-                .orElse(null);
-    }
-
-    public QuizByStageIdDto buildQuizDtoByStage(Stage stage) {
-        return toQuizByStageDto(
+    public QuizByStageNumberDto buildQuizDtoByStage(Stage stage) {
+        return toQuizByStageNumberDto(
                 stage,
                 mapToDto(quizReader.getMeaningQuizByStage(stage), this::toDto),
                 mapToDto(quizReader.getCardQuizByStage(stage), this::toDto),
@@ -86,7 +75,7 @@ public class QuizDtoFactory {
         );
     }
 
-    public List<QuizByStageIdDto> buildQuizDtoByStageList(List<Stage> stages) {
+    public List<QuizByStageNumberDto> buildQuizDtoByStageList(List<Stage> stages) {
         return stages.stream()
                 .map(this::buildQuizDtoByStage)
                 .toList();
@@ -94,22 +83,34 @@ public class QuizDtoFactory {
 
     public QuizByChapterIdDto toQuizByChapterDto(
             Chapter chapter,
-            List<QuizByStageIdDto> quizzes) {
+            List<QuizByStageNumberDto> quizzes
+    ) {
         return QuizByChapterIdDto.builder()
                 .chapterId(chapter.getChapterId())
                 .quizzes(quizzes)
                 .build();
     }
 
-    public List<Object> buildQuizDtoListByChapterAndType(List<Stage> stages, QuizType quizType) {
+    public List<QuizUnionDto> buildQuizDtoListByChapterAndType(List<Stage> stages, QuizType type) {
         return stages.stream()
-                .map(stage -> (Object) switch (quizType) {
-                    case MEAN -> getMeaningQuizByStageId(stage.getStageId());
-                    case CARD -> getCardQuizByStageId(stage.getStageId());
-                    case OX -> getOXQuizByStageId(stage.getStageId());
-                    case BLANK -> getBlankQuizByStageId(stage.getStageId());
-                })
+                .map(stage -> getQuizByStageIdAndType(stage.getStageId(), type))
                 .filter(Objects::nonNull)
                 .toList();
+    }
+
+    public QuizMeaningDto getMeaningQuizByStage(Stage stage) {
+        return mapToDto(quizReader.getMeaningQuizByStage(stage), this::toDto);
+    }
+
+    public QuizCardDto getCardQuizByStage(Stage stage) {
+        return mapToDto(quizReader.getCardQuizByStage(stage), this::toDto);
+    }
+
+    public QuizOXDto getOXQuizByStage(Stage stage) {
+        return mapToDto(quizReader.getOXQuizByStage(stage), this::toDto);
+    }
+
+    public QuizBlankDto getBlankQuizByStage(Stage stage) {
+        return mapToDto(quizReader.getBlankQuizByStage(stage), this::toDto);
     }
 }
