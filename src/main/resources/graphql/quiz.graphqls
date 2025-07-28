@@ -14,10 +14,14 @@ type QuizByStageNumberDto {
     stageId: ID!
     stageName: String!
     stageNumber: Int!
-    quizMeaning: [QuizMeaningDto!]!
-    quizCard: [QuizCardDto!]!
-    quizOX: [QuizOXDto!]!
-    quizBlank: [QuizBlankDto!]!
+    quizzes: [QuizSetDto!]!
+}
+
+type QuizSetDto {
+    quizMeaning: QuizMeaningDto!
+    quizCard: QuizCardDto!
+    quizOX: QuizOXDto!
+    quizBlank: QuizBlankDto!
 }
 
 type QuizMeaningDto {
