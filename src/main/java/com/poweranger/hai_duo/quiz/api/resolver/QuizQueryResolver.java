@@ -7,7 +7,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.graphql.data.method.annotation.Argument;
 import org.springframework.graphql.data.method.annotation.QueryMapping;
 import org.springframework.stereotype.Controller;
-
 import java.util.List;
 
 @Controller
@@ -37,7 +36,7 @@ public class QuizQueryResolver {
     }
 
     @QueryMapping
-    public List<QuizUnionDto> quizzesInChapterByType(
+    public List<QuizTypeGroupedByStageDto> quizzesInChapterByType(
             @Argument Long chapterId,
             @Argument QuizType quizType) {
         return quizInquiryService.quizzesInChapterByType(chapterId, quizType);

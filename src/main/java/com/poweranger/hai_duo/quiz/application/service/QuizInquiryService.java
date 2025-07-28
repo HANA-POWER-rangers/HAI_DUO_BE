@@ -11,7 +11,6 @@ import com.poweranger.hai_duo.quiz.api.factory.QuizDtoFactory;
 import com.poweranger.hai_duo.quiz.domain.entity.QuizType;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-
 import java.util.List;
 
 @Service
@@ -24,30 +23,46 @@ public class QuizInquiryService {
 
     public List<QuizByStageNumberDto> quizzesByStageKey(Long chapterId, int stageNumber) {
         Stage stage = getStageByChapterIdAndStageNumber(chapterId, stageNumber);
-        return List.of(quizDtoFactory.buildQuizDtoByStage(stage));
+        return List.of(toQuizByStageDto(stage));
     }
 
     public List<QuizUnionDto> quizByStageKeyAndType(Long chapterId, int stageNumber, QuizType quizType) {
         Stage stage = getStageByChapterIdAndStageNumber(chapterId, stageNumber);
-        return switch (quizType) {
-            case MEAN -> quizDtoFactory.getMeaningQuizByStage(stage);
-            case CARD -> quizDtoFactory.getCardQuizByStage(stage);
-            case OX -> quizDtoFactory.getOXQuizByStage(stage);
-            case BLANK -> quizDtoFactory.getBlankQuizByStage(stage);
-        };
+        return quizDtoFactory.getQuizUnionDtosByStage(stage, quizType);
     }
 
     public QuizByChapterIdDto allQuizzesInChapter(Long chapterId) {
         Chapter chapter = getChapterById(chapterId);
         List<Stage> stages = stageRepository.findAllByChapter(chapter);
-        List<QuizByStageNumberDto> quizList = quizDtoFactory.buildQuizDtoByStageList(stages);
-        return quizDtoFactory.toQuizByChapterDto(chapter, quizList);
+
+        List<QuizByStageNumberDto> quizList = stages.stream()
+                .map(this::toQuizByStageDto)
+                .toList();
+
+        return new QuizByChapterIdDto(chapterId, quizList);
     }
 
-    public List<QuizUnionDto> quizzesInChapterByType(Long chapterId, QuizType quizType) {
+    public List<QuizTypeGroupedByStageDto> quizzesInChapterByType(Long chapterId, QuizType quizType) {
         Chapter chapter = getChapterById(chapterId);
         List<Stage> stages = stageRepository.findAllByChapter(chapter);
-        return quizDtoFactory.buildQuizDtoListByChapterAndType(stages, quizType);
+
+        return stages.stream()
+                .map(stage -> new QuizTypeGroupedByStageDto(
+                        stage.getStageId(),
+                        stage.getStageName(),
+                        stage.getStageNumber(),
+                        quizDtoFactory.getQuizUnionDtosByStage(stage, quizType)
+                ))
+                .toList();
+    }
+
+    private QuizByStageNumberDto toQuizByStageDto(Stage stage) {
+        return new QuizByStageNumberDto(
+                stage.getStageId(),
+                stage.getStageName(),
+                stage.getStageNumber(),
+                quizDtoFactory.getQuizSetsByStage(stage)
+        );
     }
 
     private Stage getStageByChapterIdAndStageNumber(Long chapterId, int stageNumber) {
