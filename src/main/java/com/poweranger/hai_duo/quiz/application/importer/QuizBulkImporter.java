@@ -1,6 +1,8 @@
 package com.poweranger.hai_duo.quiz.application.importer;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.poweranger.hai_duo.global.exception.GeneralException;
+import com.poweranger.hai_duo.global.response.code.ErrorStatus;
 import com.poweranger.hai_duo.progress.domain.entity.Stage;
 import com.poweranger.hai_duo.progress.domain.repository.StageRepository;
 import com.poweranger.hai_duo.quiz.domain.entity.*;
@@ -38,16 +40,22 @@ public class QuizBulkImporter {
                         if (!Files.isDirectory(stagePath)) continue;
 
                         String stageDirName = stagePath.getFileName().toString();
-                        String stageName = stageDirName.replaceFirst("^\\d+-", "").trim();
+                        Integer stageNumber = parseStageNumber(stageDirName);
 
-                        Stage stage = stageRepository.findByStageNameAndChapter_ChapterId(stageName, chapterId)
-                                .orElseThrow(() -> new IllegalStateException("Stage not found: " + stageName + " (Chapter " + chapterId + ")"));
+                        System.out.println("ChapterId = " + chapterId + ", StageDirName = " + stageDirName + ", StageNumber = " + stageNumber);
+                        Stage stage = stageRepository.findByChapter_ChapterIdAndStageNumber(chapterId, stageNumber)
+                                .orElseThrow(() -> new GeneralException(ErrorStatus.STAGE_NOT_FOUND));
 
                         insertAllQuizTypes(stagePath, stage);
                     }
                 }
             }
         }
+    }
+
+    private Integer parseStageNumber(String dirName) {
+        String numberPart = dirName.split("-")[0].trim();
+        return Integer.parseInt(numberPart);
     }
 
     private void insertAllQuizTypes(Path stageDir, Stage stage) throws IOException {
