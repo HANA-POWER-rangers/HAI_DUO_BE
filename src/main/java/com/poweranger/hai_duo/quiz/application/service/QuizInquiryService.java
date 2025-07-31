@@ -26,9 +26,18 @@ public class QuizInquiryService {
         return List.of(toQuizByStageDto(stage));
     }
 
-    public List<QuizUnionDto> quizByStageKeyAndType(Long chapterId, int stageNumber, QuizType quizType) {
+    public QuizTypeGroupedByStageDto quizByStageKeyAndType(Long chapterId, int stageNumber, QuizType quizType) {
         Stage stage = getStageByChapterIdAndStageNumber(chapterId, stageNumber);
-        return quizDtoFactory.getQuizUnionDtosByStage(stage, quizType);
+        List<QuizUnionDto> quizzes = quizDtoFactory.getQuizUnionDtosByStage(stage, quizType);
+
+        return new QuizTypeGroupedByStageDto(
+                stage.getStageId(),
+                stage.getStageName(),
+                stage.getStageNumber(),
+                quizzes.size(),
+                quizType,
+                quizzes
+        );
     }
 
     public QuizByChapterIdDto allQuizzesInChapter(Long chapterId) {
@@ -47,21 +56,29 @@ public class QuizInquiryService {
         List<Stage> stages = stageRepository.findAllByChapter(chapter);
 
         return stages.stream()
-                .map(stage -> new QuizTypeGroupedByStageDto(
-                        stage.getStageId(),
-                        stage.getStageName(),
-                        stage.getStageNumber(),
-                        quizDtoFactory.getQuizUnionDtosByStage(stage, quizType)
-                ))
+                .map(stage -> {
+                    List<QuizUnionDto> quizzes = quizDtoFactory.getQuizUnionDtosByStage(stage, quizType);
+                    return new QuizTypeGroupedByStageDto(
+                            stage.getStageId(),
+                            stage.getStageName(),
+                            stage.getStageNumber(),
+                            quizzes.size(),
+                            quizType,
+                            quizzes
+                    );
+                })
                 .toList();
     }
 
     private QuizByStageNumberDto toQuizByStageDto(Stage stage) {
+        List<QuizSetDto> sets = quizDtoFactory.getQuizSetsByStage(stage);
+
         return new QuizByStageNumberDto(
                 stage.getStageId(),
                 stage.getStageName(),
                 stage.getStageNumber(),
-                quizDtoFactory.getQuizSetsByStage(stage)
+                sets.size(),
+                sets
         );
     }
 

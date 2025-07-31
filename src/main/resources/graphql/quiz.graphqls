@@ -1,7 +1,7 @@
 extend type Query {
     quizzesByStageKey(chapterId: ID!, stageNumber: Int!): [QuizByStageNumberDto!]!
-    quizByStageKeyAndType(chapterId: ID!, stageNumber: Int!, quizType: QuizType!): [QuizUnionDto!]!
-    allQuizzesInChapter(chapterId: ID!): QuizByChapterIdDto
+    quizByStageKeyAndType(chapterId: ID!, stageNumber: Int!, quizType: QuizType!): QuizTypeGroupedByStageDto!
+    allQuizzesInChapter(chapterId: ID!): QuizByChapterIdDto!
     quizzesInChapterByType(chapterId: ID!, quizType: QuizType!): [QuizTypeGroupedByStageDto!]!
 }
 
@@ -14,6 +14,7 @@ type QuizByStageNumberDto {
     stageId: ID!
     stageName: String!
     stageNumber: Int!
+    quizzesCount: Int!
     quizzes: [QuizSetDto!]!
 }
 
@@ -53,5 +54,7 @@ type QuizTypeGroupedByStageDto {
     stageId: ID!
     stageName: String!
     stageNumber: Int!
+    quizType : QuizType!
+    quizzesCount: Int!
     quizzes: [QuizUnionDto!]!
 }

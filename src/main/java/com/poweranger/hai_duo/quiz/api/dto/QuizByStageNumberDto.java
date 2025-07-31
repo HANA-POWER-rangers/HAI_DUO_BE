@@ -8,5 +8,6 @@ public record QuizByStageNumberDto(
         Long stageId,
         String stageName,
         Integer stageNumber,
+        Integer quizzesCount,
         List<QuizSetDto> quizzes
 ) {}

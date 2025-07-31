@@ -23,7 +23,7 @@ public class QuizQueryResolver {
     }
 
     @QueryMapping
-    public List<QuizUnionDto> quizByStageKeyAndType(
+    public QuizTypeGroupedByStageDto quizByStageKeyAndType(
             @Argument Long chapterId,
             @Argument Integer stageNumber,
             @Argument QuizType quizType) {
