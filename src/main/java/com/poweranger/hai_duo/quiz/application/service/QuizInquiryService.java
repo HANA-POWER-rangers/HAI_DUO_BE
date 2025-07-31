@@ -57,11 +57,14 @@ public class QuizInquiryService {
     }
 
     private QuizByStageNumberDto toQuizByStageDto(Stage stage) {
+        List<QuizSetDto> sets = quizDtoFactory.getQuizSetsByStage(stage);
+
         return new QuizByStageNumberDto(
                 stage.getStageId(),
                 stage.getStageName(),
                 stage.getStageNumber(),
-                quizDtoFactory.getQuizSetsByStage(stage)
+                sets.size(),
+                sets
         );
     }
 
