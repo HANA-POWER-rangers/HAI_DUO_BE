@@ -17,6 +17,9 @@ services:
         condition: service_started
     networks:
       - hai-duo-network
+    volumes:
+      - /Users/seun/Desktop/POWER-ranger/dev_Backend/src/main/java/com/poweranger/hai_duo/data/chapter_quiz_data:/app/quiz_data
+
 
   db_mysql:
     container_name: hai-duo-mysql
