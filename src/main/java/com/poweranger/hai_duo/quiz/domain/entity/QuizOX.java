@@ -4,18 +4,20 @@ import com.poweranger.hai_duo.progress.domain.entity.Stage;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 @Entity
 @NoArgsConstructor
 @Getter
+@Setter
 @Table(name = "quiz_ox")
 public class QuizOX {
 
     @Id
-    private Long stageId;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long quizOXId;
 
-    @OneToOne
-    @MapsId
+    @ManyToOne
     @JoinColumn(name = "stage_id")
     private Stage stage;
 

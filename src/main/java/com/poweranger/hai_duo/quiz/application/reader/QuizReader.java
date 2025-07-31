@@ -8,7 +8,7 @@ import com.poweranger.hai_duo.quiz.domain.entity.QuizOX;
 import com.poweranger.hai_duo.quiz.domain.repository.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
-import java.util.Optional;
+import java.util.List;
 
 @Component
 @RequiredArgsConstructor
@@ -19,35 +19,19 @@ public class QuizReader {
     private final QuizOXRepository quizOXRepository;
     private final QuizBlankRepository quizBlankRepository;
 
-    public Optional<QuizMeaning> getMeaningQuizByStage(Stage stage) {
-        return quizMeaningRepository.findByStage(stage);
+    public List<QuizMeaning> getMeaningQuizzesByStage(Stage stage) {
+        return quizMeaningRepository.findAllByStage(stage);
     }
 
-    public Optional<QuizCard> getCardQuizByStage(Stage stage) {
-        return quizCardRepository.findByStage(stage);
+    public List<QuizCard> getCardQuizzesByStage(Stage stage) {
+        return quizCardRepository.findAllByStage(stage);
     }
 
-    public Optional<QuizOX> getOXQuizByStage(Stage stage) {
-        return quizOXRepository.findByStage(stage);
+    public List<QuizOX> getOXQuizzesByStage(Stage stage) {
+        return quizOXRepository.findAllByStage(stage);
     }
 
-    public Optional<QuizBlank> getBlankQuizByStage(Stage stage) {
-        return quizBlankRepository.findByStage(stage);
-    }
-
-    public Optional<QuizMeaning> getMeaningQuizByStageId(Long stageId) {
-        return quizMeaningRepository.findByStage_StageId(stageId);
-    }
-
-    public Optional<QuizCard> getCardQuizByStageId(Long stageId) {
-        return quizCardRepository.findByStage_StageId(stageId);
-    }
-
-    public Optional<QuizOX> getOXQuizByStageId(Long stageId) {
-        return quizOXRepository.findByStage_StageId(stageId);
-    }
-
-    public Optional<QuizBlank> getBlankQuizByStageId(Long stageId) {
-        return quizBlankRepository.findByStage_StageId(stageId);
+    public List<QuizBlank> getBlankQuizzesByStage(Stage stage) {
+        return quizBlankRepository.findAllByStage(stage);
     }
 }
